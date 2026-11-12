@@ -16,7 +16,8 @@ import {
   ScrollText,
   Zap,
 } from "lucide-react";
-import { Avatar, Chip, PreviewFrame, cx } from "./ui/primitives";
+import { motion } from "framer-motion";
+import { Avatar, Chip, EASE, PreviewFrame } from "./ui/primitives";
 import type { ModuleKey } from "../content/types";
 
 type Icon = ComponentType<SVGProps<SVGSVGElement> & { strokeWidth?: number }>;
@@ -218,7 +219,7 @@ const Fact = ({ k, v }: { k: string; v: React.ReactNode }) => (
 const flowNodes: Array<{ icon: Icon; type: string; title: string; selected?: boolean }> = [
   { icon: Zap, type: "Trigger", title: "Inbound message" },
   { icon: GitBranch, type: "Condition", title: "Asks for a service booking" },
-  { icon: FileInput, type: "Flow", title: "Send “Service details” Flow" },
+  { icon: FileInput, type: "WhatsApp Flow", title: "Send “Service details” Flow" },
   { icon: Hourglass, type: "Wait for response", title: "Flow submission received" },
   { icon: Database, type: "CRM action", title: "Configured HTTPS connection", selected: true },
 ];
@@ -233,9 +234,17 @@ export function WorkflowMini() {
       </div>
       <ol className="mx-auto flex max-w-[340px] flex-col px-4 py-6 text-[12px]">
         {flowNodes.map((n, i) => (
-          <li key={n.type} className="flex flex-col items-center">
-            <div className={cx("flex w-full items-center gap-3 rounded-lg border bg-card px-3 py-2", n.selected ? "border-accent/60" : "border-line")}>
-              <span className={cx("grid size-7 shrink-0 place-items-center rounded-md", n.selected ? "bg-accent text-on-accent" : "bg-elevated text-accent")}>
+          <motion.li
+            key={n.type}
+            className="flex flex-col items-center"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.45, delay: 0.15 + i * 0.16, ease: EASE }}
+          >
+            {/* illustrative highlight walking through the steps — not a live execution */}
+            <div className="node-walk flex w-full items-center gap-3 rounded-lg border border-line bg-card px-3 py-2" style={{ animationDelay: `${1.2 + i * 0.9}s` }}>
+              <span className="grid size-7 shrink-0 place-items-center rounded-md bg-elevated text-accent">
                 <n.icon className="size-3.5" strokeWidth={1.5} />
               </span>
               <span className="min-w-0 leading-tight">
@@ -243,8 +252,12 @@ export function WorkflowMini() {
                 <span className="block truncate font-medium text-fg">{n.title}</span>
               </span>
             </div>
-            {i < flowNodes.length - 1 && <span className="h-4 w-px bg-line" />}
-          </li>
+            {i < flowNodes.length - 1 && (
+              <svg aria-hidden width="2" height="18" className="text-accent/50">
+                <line x1="1" y1="0" x2="1" y2="18" stroke="currentColor" strokeWidth="1.5" className="dash-flow" />
+              </svg>
+            )}
+          </motion.li>
         ))}
       </ol>
     </PreviewFrame>

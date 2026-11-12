@@ -1,11 +1,12 @@
 import { useId, useRef, useState, type KeyboardEvent } from "react";
-import { motion } from "framer-motion";
-import { Plus } from "lucide-react";
-import { cx } from "./ui/primitives";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+import { EASE, cx } from "./ui/primitives";
 
 /**
  * Accessible accordion: native buttons with aria-expanded/controls,
  * ArrowUp/ArrowDown/Home/End move focus between questions.
+ * Answers open with a smooth height transition; the chevron rotates.
  */
 export function FAQAccordion({ items, defaultOpen = 0 }: { items: Array<{ q: string; a: string }>; defaultOpen?: number | null }) {
   const [open, setOpen] = useState<number | null>(defaultOpen);
@@ -27,7 +28,15 @@ export function FAQAccordion({ items, defaultOpen = 0 }: { items: Array<{ q: str
         const btnId = `${base}-q${i}`;
         const panelId = `${base}-a${i}`;
         return (
-          <div key={it.q} className="border-b border-line">
+          <div key={it.q} className="relative border-b border-line">
+            {/* active-question marker */}
+            <span
+              aria-hidden
+              className={cx(
+                "absolute -left-4 top-6 h-6 w-px origin-top bg-accent transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] sm:-left-6",
+                isOpen ? "scale-y-100" : "scale-y-0",
+              )}
+            />
             <h3>
               <button
                 ref={(el) => {
@@ -41,32 +50,36 @@ export function FAQAccordion({ items, defaultOpen = 0 }: { items: Array<{ q: str
                 onKeyDown={(e) => onKey(e, i)}
                 className="group flex w-full items-center gap-6 py-6 text-left"
               >
-                <span className={cx("flex-1 text-[17px] font-medium transition-colors", isOpen ? "text-fg" : "text-fg/90 group-hover:text-fg")}>
+                <span className={cx("flex-1 text-[17px] font-medium transition-colors duration-200", isOpen ? "text-fg" : "text-fg/80 group-hover:text-fg")}>
                   {it.q}
                 </span>
                 <span
                   aria-hidden
                   className={cx(
-                    "grid size-8 shrink-0 place-items-center rounded-full border transition-[transform,color,border-color] duration-150",
-                    isOpen ? "rotate-45 border-[#4a4e68] text-fg" : "border-line text-muted group-hover:border-[#4a4e68]",
+                    "grid size-8 shrink-0 place-items-center rounded-full border transition-[transform,color,border-color,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                    isOpen ? "rotate-180 border-accent/50 bg-accent/10 text-accent" : "border-line text-muted group-hover:border-[#4a4e68] group-hover:text-fg",
                   )}
                 >
-                  <Plus className="size-4" />
+                  <ChevronDown className="size-4" />
                 </span>
               </button>
             </h3>
-            {isOpen && (
+            <AnimatePresence initial={false}>
+              {isOpen && (
                 <motion.div
                   id={panelId}
                   role="region"
                   aria-labelledby={btnId}
-                  initial={{ opacity: 0, y: -4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ height: { duration: 0.35, ease: EASE }, opacity: { duration: 0.25 } }}
+                  className="overflow-hidden"
                 >
                   <p className="max-w-[760px] pb-7 pr-14 text-[15px] leading-relaxed text-muted">{it.a}</p>
                 </motion.div>
               )}
+            </AnimatePresence>
           </div>
         );
       })}

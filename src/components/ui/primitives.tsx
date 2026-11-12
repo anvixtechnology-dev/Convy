@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
@@ -9,6 +9,53 @@ export function cx(...parts: Array<string | false | null | undefined>) {
 
 /** One easing curve for the whole site. */
 export const EASE = [0.22, 1, 0.36, 1] as const;
+
+/**
+ * Cursor-following soft teal light. Drop inside any `relative group` element;
+ * it listens to its parent's pointer and only shows while hovered.
+ * Updates two CSS variables — no React re-renders, no animation loop.
+ */
+export function Spotlight({ size = 420 }: { size?: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    const parent = el?.parentElement;
+    if (!el || !parent) return;
+    const onMove = (e: PointerEvent) => {
+      const r = parent.getBoundingClientRect();
+      el.style.setProperty("--sx", `${e.clientX - r.left}px`);
+      el.style.setProperty("--sy", `${e.clientY - r.top}px`);
+    };
+    parent.addEventListener("pointermove", onMove);
+    return () => parent.removeEventListener("pointermove", onMove);
+  }, []);
+  return (
+    <span
+      ref={ref}
+      aria-hidden
+      className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+      style={{ background: `radial-gradient(${size}px circle at var(--sx, 50%) var(--sy, 50%), rgb(50 191 165 / 0.07), transparent 65%)` }}
+    />
+  );
+}
+
+/**
+ * Product preview reveal: slides in from one side while a rounded mask opens.
+ * Transform + clip-path only, once per page view.
+ */
+export function MaskReveal({ children, from = "right", className }: { children: ReactNode; from?: "left" | "right"; className?: string }) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, x: from === "right" ? 40 : -40, clipPath: "inset(6% 10% 6% 10% round 16px)" }}
+      whileInView={{ opacity: 1, x: 0, clipPath: "inset(0% 0% 0% 0% round 12px)" }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.9, ease: EASE }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 /** Stagger step between siblings, capped so long lists don't drag. */
 export const stagger = (i: number, step = 0.06, max = 0.3) => Math.min(i * step, max);
@@ -120,8 +167,9 @@ export function SectionHeading({
 /* ------------------------------------------------------------------ */
 type Variant = "primary" | "secondary" | "ghost";
 const variants: Record<Variant, string> = {
-  primary: "bg-accent text-on-accent hover:bg-[#45cdb4]",
-  secondary: "border border-line bg-white/[0.02] text-fg hover:border-[#4a4e68] hover:bg-white/[0.05]",
+  primary:
+    "bg-accent text-on-accent shadow-[0_8px_24px_-12px_rgb(50_191_165/0.55)] hover:scale-[1.02] hover:bg-[#45cdb4] hover:shadow-[0_14px_34px_-12px_rgb(50_191_165/0.7)]",
+  secondary: "border border-line bg-white/[0.02] text-fg hover:border-accent/40 hover:bg-accent/[0.06]",
   ghost: "text-fg hover:text-accent",
 };
 
@@ -171,7 +219,7 @@ export function Button({
     <SmartLink
       href={href}
       className={cx(
-        "group inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-[15px] font-medium transition-[color,background-color,border-color,transform] duration-200 active:scale-[0.98]",
+        "group inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-[15px] font-medium transition-[color,background-color,border-color,box-shadow,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98]",
         variants[variant],
         className,
       )}

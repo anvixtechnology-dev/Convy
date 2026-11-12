@@ -11,7 +11,59 @@ import {
   SendHorizontal,
   SquareStack,
 } from "lucide-react";
-import { Avatar, Chip, PreviewFrame, cx } from "./ui/primitives";
+import { useEffect, useState, type ReactNode } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { Avatar, Chip, EASE, PreviewFrame, cx } from "./ui/primitives";
+
+/**
+ * The demo conversation plays out once on load:
+ * 1 question → 2 reply → 3 typing → 4 answer → 5 private note → 6 assignment line.
+ * Reduced motion shows the finished conversation immediately.
+ */
+const TIMELINE = [900, 1700, 2500, 3500, 4300, 4900];
+function useChatStep() {
+  const reduce = useReducedMotion();
+  const [step, setStep] = useState(reduce ? TIMELINE.length : 0);
+  useEffect(() => {
+    if (reduce) return;
+    const timers = TIMELINE.map((ms, i) => window.setTimeout(() => setStep(i + 1), ms));
+    return () => timers.forEach(clearTimeout);
+  }, [reduce]);
+  return step;
+}
+
+function Appear({ show, children, className }: { show: boolean; children: ReactNode; className?: string }) {
+  return (
+    <AnimatePresence initial={false}>
+      {show && (
+        <motion.div
+          className={className}
+          initial={{ opacity: 0, y: 10, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, transition: { duration: 0.12 } }}
+          transition={{ duration: 0.4, ease: EASE }}
+        >
+          {children}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function Typing() {
+  return (
+    <span className="inline-flex items-center gap-1 rounded-xl rounded-tl-sm border border-line bg-card px-3 py-2.5">
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="size-1.5 rounded-full bg-subtle"
+          animate={{ opacity: [0.3, 1, 0.3], y: [0, -2, 0] }}
+          transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }}
+        />
+      ))}
+    </span>
+  );
+}
 
 /** Illustrative CONVY dashboard (hero). All data is demo data. */
 const modules = [
@@ -31,6 +83,7 @@ const conversations = [
 ];
 
 export function DashboardPreview({ className }: { className?: string }) {
+  const step = useChatStep();
   return (
     <PreviewFrame
       className={className}
@@ -112,7 +165,7 @@ export function DashboardPreview({ className }: { className?: string }) {
               <div className="truncate text-[11px] text-subtle">WhatsApp · Site-visit enquiry</div>
             </div>
             <div className="ml-auto flex items-center gap-1.5">
-              <Chip tone="teal">Open</Chip>
+              <Chip tone="teal"><span aria-hidden className="live-dot size-1.5 rounded-full bg-accent text-accent" />Open</Chip>
               <span className="hidden items-center gap-1.5 rounded-md border border-line py-0.5 pl-0.5 pr-2 text-[11px] text-muted lg:inline-flex">
                 <Avatar initials="AK" tone={0} size="sm" />
                 Assigned to Arjun K.
@@ -122,16 +175,19 @@ export function DashboardPreview({ className }: { className?: string }) {
 
           <div className="bg-dots flex min-h-0 flex-1 flex-col gap-2.5 overflow-hidden bg-page/60 px-4 py-4">
             <span className="self-center rounded-full border border-line bg-card px-2 py-0.5 text-[10px] text-subtle">Today</span>
-            <Bubble side="in" time="10:12">Can I book a site visit this Saturday?</Bubble>
-            <Bubble side="out" time="10:14">Absolutely, Priya. Would 11 am work for you?</Bubble>
-            <Bubble side="in" time="10:15">That works. Thank you!</Bubble>
-            <div className="mt-1 rounded-lg border border-dashed border-[#5a4c2c] bg-[#2a2519] px-3 py-2 text-[#e8d7aa]">
-              <div className="mb-0.5 text-[10px] font-medium uppercase tracking-wider text-[#c9a95e]">Private note · @Asha</div>
-              Please confirm the visit details.
-            </div>
-            <div className="flex items-center gap-1.5 self-center text-[11px] text-subtle">
+            <Appear show={step >= 1} className="flex"><Bubble side="in" time="10:12">Can I book a site visit this Saturday?</Bubble></Appear>
+            <Appear show={step >= 2} className="flex justify-end"><Bubble side="out" time="10:14">Absolutely, Priya. Would 11 am work for you?</Bubble></Appear>
+            <Appear show={step === 3} className="flex"><Typing /></Appear>
+            <Appear show={step >= 4} className="flex"><Bubble side="in" time="10:15">That works. Thank you!</Bubble></Appear>
+            <Appear show={step >= 5} className="mt-1">
+              <div className="rounded-lg border border-dashed border-[#5a4c2c] bg-[#2a2519] px-3 py-2 text-[#e8d7aa]">
+                <div className="mb-0.5 text-[10px] font-medium uppercase tracking-wider text-[#c9a95e]">Private note · @Asha</div>
+                Please confirm the visit details.
+              </div>
+            </Appear>
+            <Appear show={step >= 6} className="flex items-center justify-center gap-1.5 text-[11px] text-subtle">
               <Clock3 className="size-3" /> Assigned to Arjun K. · response timer running
-            </div>
+            </Appear>
           </div>
 
           <footer className="border-t border-line px-3 py-2.5">

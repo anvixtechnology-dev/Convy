@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { brand, footer } from "../../content/site";
 import { moduleAnchor } from "../../content/types";
 import { LINKS, SITE } from "../../config/links";
-import { Logo, SmartLink } from "../ui/primitives";
+import { Logo, Reveal, SmartLink } from "../ui/primitives";
 
 /** Footer navigation — labels verbatim from the brief (Part 5). */
 const columns: Array<{ title: string; links: Array<{ label: string; href: string }> }> = [
@@ -47,8 +47,8 @@ const columns: Array<{ title: string; links: Array<{ label: string; href: string
 
 export function Footer() {
   return (
-    <footer className="border-t border-line bg-[#11121c]">
-      <div className="container-page grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.6fr)_repeat(4,minmax(0,1fr))] lg:gap-10 lg:py-20">
+    <footer className="relative z-[1] border-t border-line bg-[#11121c]">
+      <Reveal y={20} className="container-page grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.6fr)_repeat(4,minmax(0,1fr))] lg:gap-10 lg:py-20">
         <div className="sm:col-span-2 lg:col-span-1 lg:pr-8">
           <Link to="/" aria-label="CONVY home" className="inline-block rounded-md">
             <Logo withTagline tagline={brand.tagline} />
@@ -62,7 +62,7 @@ export function Footer() {
             <ul className="mt-5 space-y-3">
               {col.links.map((l) => (
                 <li key={l.label}>
-                  <SmartLink href={l.href} className="text-[14px] text-subtle transition-colors hover:text-accent">
+                  <SmartLink href={l.href} className="link-underline pb-0.5 text-[14px] text-subtle hover:text-fg">
                     {l.label}
                   </SmartLink>
                 </li>
@@ -70,7 +70,7 @@ export function Footer() {
             </ul>
           </nav>
         ))}
-      </div>
+      </Reveal>
       <div className="border-t border-line">
         <div className="container-page flex flex-col gap-2 py-6 text-[13px] text-subtle sm:flex-row sm:items-center sm:justify-between">
           <p>{footer.copyright}</p>

@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { Fragment, useEffect, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   Fingerprint,
   GitBranch,
@@ -36,7 +37,7 @@ import {
   SectionHeading,
   SmartLink,
   TextLink,
-  cx, ReadTicks, stagger } from "../components/ui/primitives";
+  cx, MaskReveal, ReadTicks, stagger } from "../components/ui/primitives";
 import { DashboardPreview } from "../components/DashboardPreview";
 import { FeatureColumn, FeatureListRow, FeatureRow } from "../components/FeatureCard";
 import { ProcessTimeline } from "../components/ProcessTimeline";
@@ -46,49 +47,100 @@ import { FAQAccordion } from "../components/FAQAccordion";
 import { AISummaryMini, CampaignMini, InboxMini, TemplateMini, UsersMini, WorkflowMini } from "../components/MiniPreviews";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+/** Load-time fade-and-rise used for the hero copy. */
+const rise = (delay: number, y = 14) => ({
+  initial: { opacity: 0, y },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.7, delay, ease },
+});
 const openConvyIcon = LINKS.openConvyIsExternal ? "external" : "arrow";
 
 /* ================================================================== */
 /* 01 HERO                                                            */
 /* ================================================================== */
+/** Splits a line into words that each rise out of their own mask. */
+function RisingWords({ text, delay, className }: { text: string; delay: number; className?: string }) {
+  return (
+    <span className="block">
+      {text.split(" ").map((w, i, all) => (
+        <Fragment key={i}>
+          <span className="inline-block overflow-hidden pb-[0.1em] align-bottom">
+            <motion.span
+              className={cx("inline-block", className)}
+              initial={{ y: "110%", opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: delay + i * 0.07, ease }}
+            >
+              {w}
+            </motion.span>
+          </span>
+          {/* real space between masked words (kept outside the clip) */}
+          {i < all.length - 1 && " "}
+        </Fragment>
+      ))}
+    </span>
+  );
+}
+
 export function HeroSection() {
+  const reduce = useReducedMotion();
   return (
     <section aria-labelledby="hero-title" className="relative overflow-hidden">
+      {/* soft radial lighting behind the product preview */}
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute right-[-10%] top-[-20%] h-[760px] w-[900px] rounded-full bg-[radial-gradient(closest-side,rgb(50_191_165/0.16),rgb(50_191_165/0.05)_55%,transparent)]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.6, delay: 0.2 }}
+      />
       <div className="container-page relative grid gap-14 pb-20 pt-14 sm:pt-20 lg:grid-cols-[minmax(0,480px)_minmax(0,1fr)] lg:gap-14 lg:pb-28 lg:pt-24">
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease }} className="lg:pt-4">
-          <Eyebrow>{hero.eyebrow}</Eyebrow>
+        <div className="lg:pt-4">
+          <motion.div {...rise(0)}>
+            <Eyebrow>{hero.eyebrow}</Eyebrow>
+          </motion.div>
           <h1 id="hero-title" className="text-[2.75rem] font-medium leading-[1.04] tracking-[-0.035em] text-fg sm:text-[3.5rem] lg:text-hero">
-            {hero.titleLine1}
-            <br />
-            <span className="text-accent">{hero.titleLine2}</span>
+            <RisingWords text={hero.titleLine1} delay={0.1} />
+            <RisingWords text={hero.titleLine2} delay={0.28} className="text-shimmer" />
           </h1>
-          <p className="mt-7 text-lg leading-relaxed text-muted">{hero.description}</p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <motion.p {...rise(0.4)} className="mt-7 text-lg leading-relaxed text-muted">{hero.description}</motion.p>
+          <motion.div {...rise(0.5)} className="mt-9 flex flex-col gap-3 sm:flex-row">
             <Button href={LINKS.openConvy} icon={openConvyIcon} className="h-12 px-6">
               {hero.primaryCta}
             </Button>
             <Button href="/platform" variant="secondary" className="h-12 px-6">
               {hero.secondaryCta}
             </Button>
-          </div>
+          </motion.div>
           <ul className="mt-10 space-y-3 border-t border-line pt-6">
-            {hero.highlights.map((h) => (
-              <li key={h} className="flex items-start gap-3 text-[14px] text-fg/90">
+            {hero.highlights.map((h, i) => (
+              <motion.li key={h} {...rise(0.62 + i * 0.08, 8)} className="flex items-start gap-3 text-[14px] text-fg/90">
                 <ReadTicks />
                 {h}
-              </li>
+              </motion.li>
             ))}
           </ul>
-          <p className="mt-7 text-[14px] text-subtle">
+          <motion.p {...rise(0.9, 8)} className="mt-7 text-[14px] text-subtle">
             {hero.demoPrompt}{" "}
             <SmartLink href={LINKS.bookDemo} className="font-medium text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent">
               {hero.demoLink}
             </SmartLink>
-          </p>
-        </motion.div>
+          </motion.p>
+        </div>
 
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.15, ease }} className="min-w-0">
-          <DashboardPreview className="lg:w-[820px] lg:max-w-none" />
+        <motion.div
+          initial={{ opacity: 0, y: 40, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 1, delay: 0.3, ease }}
+          className="min-w-0 origin-top-left"
+        >
+          {/* very slow float — a few pixels, paused for reduced motion */}
+          <motion.div
+            animate={reduce ? undefined : { y: [0, -6, 0] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
+          >
+            <DashboardPreview className="lg:w-[820px] lg:max-w-none" />
+          </motion.div>
           <PreviewCaption>{hero.previewLabel}</PreviewCaption>
         </motion.div>
       </div>
@@ -135,7 +187,7 @@ const processIcons = [Link2, UsersRound, GitBranch, Eye];
 
 export function ProcessSection() {
   return (
-    <section aria-labelledby="process-title" className="bg-surface py-24 lg:py-32">
+    <section aria-labelledby="process-title" className="bg-band py-24 lg:py-32">
       <div className="container-page">
         <SectionHeading id="process-title" eyebrow={process.eyebrow} title={process.title} description={process.description} className="mb-16" />
         <ProcessTimeline steps={process.steps.map((s, i) => ({ ...s, icon: processIcons[i] }))} />
@@ -151,18 +203,54 @@ export function ProcessSection() {
 /* ================================================================== */
 const byKey = Object.fromEntries(features.map((x) => [x.key, x])) as Record<Feature["key"], Feature>;
 
-function ModuleNav() {
+/** Highlights the module currently in view (IntersectionObserver, no scroll listeners). */
+function useActiveModule() {
+  const [active, setActive] = useState<string | null>(null);
+  useEffect(() => {
+    const els = features.map((x) => document.getElementById(moduleAnchor[x.key])).filter(Boolean) as HTMLElement[];
+    const io = new IntersectionObserver(
+      (entries) => {
+        const hit = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+        if (hit) setActive(hit.target.id);
+      },
+      { rootMargin: "-35% 0px -55% 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+  return active;
+}
+
+function ModuleNav({ sticky = false }: { sticky?: boolean }) {
+  const active = useActiveModule();
   return (
-    <nav aria-label="Product modules">
+    <nav
+      aria-label="Product modules"
+      className={cx(sticky && "lg:sticky lg:top-[84px] lg:z-20 lg:-mx-8 lg:border-b lg:border-line lg:bg-page/80 lg:px-8 lg:py-3 lg:backdrop-blur-md")}
+    >
       <ul className="flex flex-wrap gap-x-6 gap-y-2 text-[14px]">
-        {features.map((x) => (
-          <li key={x.key}>
-            <a href={`#${moduleAnchor[x.key]}`} className="text-muted transition-colors hover:text-fg">
-              <span className="mr-1.5 tabular-nums text-subtle">{x.number}</span>
-              {x.nav}
-            </a>
-          </li>
-        ))}
+        {features.map((x) => {
+          const isActive = active === moduleAnchor[x.key];
+          return (
+            <li key={x.key} className="relative">
+              <a
+                href={`#${moduleAnchor[x.key]}`}
+                aria-current={isActive ? "location" : undefined}
+                className={cx("transition-colors", isActive ? "text-fg" : "text-muted hover:text-fg")}
+              >
+                <span className="mr-1.5 tabular-nums text-subtle">{x.number}</span>
+                {x.nav}
+              </a>
+              {isActive && (
+                <motion.span
+                  layoutId={sticky ? "module-indicator-sticky" : "module-indicator"}
+                  className="absolute -bottom-1 left-0 right-0 h-px bg-accent"
+                  transition={{ duration: 0.35, ease }}
+                />
+              )}
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );
@@ -191,7 +279,7 @@ export function WorkspaceSection({
           description={workspace.description}
           className="mb-12"
         />
-        <ModuleNav />
+        <ModuleNav sticky={variant === "showcase"} />
 
         {variant === "overview" ? (
           <div className="mt-14 border-b border-line">
@@ -250,7 +338,7 @@ function ProcessLine({ steps }: { steps: string[] }) {
 /** compact = no previews (Product page, where previews already appear above). */
 export function JourneysSection({ compact = false }: { compact?: boolean }) {
   return (
-    <section aria-labelledby="journeys-title" className="bg-surface py-24 lg:py-32">
+    <section aria-labelledby="journeys-title" className="bg-band py-24 lg:py-32">
       <div className="container-page">
         <SectionHeading id="journeys-title" eyebrow={journeys.eyebrow} title={journeys.title} description={journeys.description} className="mb-16 lg:mb-20" />
         <div className={cx(compact && "border-b border-line")}>
@@ -292,9 +380,12 @@ export function JourneysSection({ compact = false }: { compact?: boolean }) {
                     {j.link}
                   </TextLink>
                 </div>
-                <div className={cx("min-w-0 lg:col-span-7", i % 2 === 1 ? "lg:order-1 lg:col-start-1" : "lg:col-start-6 lg:pl-8")}>
+                <MaskReveal
+                  from={i % 2 === 1 ? "left" : "right"}
+                  className={cx("min-w-0 lg:col-span-7", i % 2 === 1 ? "lg:order-1 lg:col-start-1" : "lg:col-start-6 lg:pl-8")}
+                >
                   {journeyPreview[j.key as keyof typeof journeyPreview]}
-                </div>
+                </MaskReveal>
               </Reveal>
             ),
           )}
@@ -339,7 +430,7 @@ export function IndustriesSection({ headingLevel = "h2" }: { headingLevel?: "h1"
 /* ================================================================== */
 export function GettingStartedSection() {
   return (
-    <section id="get-started" aria-labelledby="start-title" className="bg-surface py-24 lg:py-32">
+    <section id="get-started" aria-labelledby="start-title" className="bg-band py-24 lg:py-32">
       <div className="container-page">
         <SectionHeading id="start-title" eyebrow={gettingStarted.eyebrow} title={gettingStarted.title} className="mb-16" />
         <ProcessTimeline variant="timeline" steps={gettingStarted.steps} />
@@ -388,7 +479,7 @@ export function SecuritySection({ headingLevel = "h2" }: { headingLevel?: "h1" |
 /* ================================================================== */
 export function PricingSection({ headingLevel = "h2" }: { headingLevel?: "h1" | "h2" }) {
   return (
-    <section id="pricing" aria-labelledby="pricing-title" className="bg-surface py-24 lg:py-32">
+    <section id="pricing" aria-labelledby="pricing-title" className="bg-band py-24 lg:py-32">
       <div className="container-page">
         <SectionHeading as={headingLevel} id="pricing-title" eyebrow={pricing.eyebrow} title={pricing.title} description={pricing.description} className="mb-16" />
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -397,6 +488,7 @@ export function PricingSection({ headingLevel = "h2" }: { headingLevel?: "h1" | 
               key={p.id}
               {...p}
               delay={stagger(i, 0.08)}
+              highlight={p.id === "growth"}
               cta={
                 p.id === "enterprise"
                   ? { label: "Book a demo", href: LINKS.bookDemo, variant: "secondary" }

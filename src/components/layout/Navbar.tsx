@@ -84,7 +84,12 @@ export function Navbar() {
         Skip to content
       </a>
 
-      <div className="relative mx-auto w-full lg:w-fit">
+      <motion.div
+        className="relative mx-auto w-full lg:w-fit"
+        initial={{ opacity: 0, y: -16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      >
         <nav
           aria-label="Main"
           className="flex items-center justify-between rounded-full border border-line bg-page/80 py-3 pl-5 pr-3 text-sm text-fg backdrop-blur-md lg:justify-start lg:px-6"
@@ -105,7 +110,19 @@ export function Navbar() {
                   {({ isActive }) => (
                     <>
                       <RollingText>{item.label}</RollingText>
-                      {isActive && <span aria-hidden className="absolute -bottom-1.5 left-1/2 size-1 -translate-x-1/2 rounded-full bg-accent" />}
+                      {isActive ? (
+                        <motion.span
+                          layoutId="nav-active-dot"
+                          aria-hidden
+                          className="absolute -bottom-1.5 left-1/2 size-1 -translate-x-1/2 rounded-full bg-accent"
+                          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                        />
+                      ) : (
+                        <span
+                          aria-hidden
+                          className="absolute -bottom-1 left-0 right-0 h-px origin-left scale-x-0 bg-accent/70 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
+                        />
+                      )}
                     </>
                   )}
                 </NavLink>
@@ -170,7 +187,7 @@ export function Navbar() {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </motion.div>
     </header>
   );
 }
