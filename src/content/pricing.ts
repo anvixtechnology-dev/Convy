@@ -1,0 +1,78 @@
+/** Pricing — verbatim from the brief (Section 09). Do not edit prices or limits here without approval. */
+export const pricing = {
+  eyebrow: "SIMPLE TENANT PRICING",
+  title: "Plans that grow with each business.",
+  description:
+    "Your organization owns the billing relationship. Each tenant chooses the plan and limits that match its own team, channels, integrations and automation workload.",
+  plans: [
+    {
+      id: "starter",
+      name: "STARTER",
+      audience: "Small teams starting with WhatsApp.",
+      price: "₹1,999",
+      unit: "/ tenant / month",
+      items: [
+        "3 users",
+        "1 WhatsApp number",
+        "1 integration",
+        "5 active Journeys",
+        "50,000 campaign messages / month",
+        "Shared inbox, templates and campaigns",
+        "100 AI credits / month",
+      ],
+    },
+    {
+      id: "growth",
+      name: "GROWTH",
+      audience: "Sales and operations teams.",
+      price: "₹4,999",
+      unit: "/ tenant / month",
+      items: [
+        "10 users",
+        "3 WhatsApp numbers",
+        "5 integrations",
+        "25 active Journeys",
+        "250,000 campaign messages / month",
+        "Advanced roles and analytics",
+        "1,000 AI credits / month",
+      ],
+    },
+    {
+      id: "pro",
+      name: "PRO",
+      audience: "Multi-team operations.",
+      price: "₹9,999",
+      unit: "/ tenant / month",
+      items: [
+        "25 users",
+        "10 WhatsApp numbers",
+        "15 integrations",
+        "100 active Journeys",
+        "1,000,000 campaign messages / month",
+        "Advanced automation and priority support",
+        "5,000 AI credits / month",
+      ],
+    },
+    {
+      id: "enterprise",
+      name: "ENTERPRISE",
+      audience: "Large organizations with multiple tenants.",
+      price: "Custom",
+      unit: "",
+      items: [
+        "Custom users and channel limits",
+        "Custom integration limits",
+        "Custom Journey and campaign limits",
+        "Organization-level commercial agreement",
+        "Volume pricing",
+        "Dedicated onboarding and support",
+        "Custom AI allowance",
+      ],
+    },
+  ],
+  notes: [
+    "Platform subscriptions are tenant-scoped. WhatsApp and other provider delivery charges are billed separately from the monthly Convy plan.",
+    "Convy AI is available on every plan with an included monthly AI credit allowance. Additional AI usage can be purchased separately when enabled.",
+    "Campaign limits are measured by campaign messages/recipients processed, not by the number of campaign records you create. Existing customers can remain on a legacy price book until they change plans or move to a new commercial agreement.",
+  ],
+};
