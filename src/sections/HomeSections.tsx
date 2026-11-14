@@ -323,13 +323,13 @@ export function StatementSection() {
 
 /* ================================================================== 6 Industries: rows beside a WhatsApp thread */
 export function IndustriesSection({ headingLevel = "h2" }: { headingLevel?: H }) {
+  if (headingLevel === "h1") return <SolutionsIndustries />;
   return (
     <section className="section g2m" id="industries" aria-labelledby="industries-h">
       <div className="wrap grid">
           <div className="span-6 stack-6">
             <div className="section-head" data-reveal="">
               <Heading as={headingLevel} id="industries-h" lead={industries.titleLine1} muted={industries.titleLine2} />
-              {headingLevel === "h1" && <p>{industries.description}</p>}
             </div>
             <ul className="rows cv-rows">
               {industries.items.map((it) => (
@@ -345,6 +345,42 @@ export function IndustriesSection({ headingLevel = "h2" }: { headingLevel?: H })
               <Frag className="stage stage--fade-b" html={`<div class="at-rise to-edge" style="--w:440px;--ax:max(24px, 50% - 220px);--ay:48px">${enquiryChat}</div>`} />
             </div>
           </SplitStage>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * The Solutions page's opening: the h1, its intro and a WhatsApp thread on the first screen; the
+ * five industries, each with its customer journey, on the second. Two screens (.g2), so the
+ * larger h1 and the intro never push the list into the next section.
+ */
+function SolutionsIndustries() {
+  return (
+    <section className="section g2 cv-solutions" id="industries" aria-labelledby="industries-h">
+      <div className="wrap">
+        <div className="grid cv-solutions__top">
+          <div className="span-6 stack-6">
+            <div className="section-head" data-reveal="">
+              <Heading as="h1" id="industries-h" lead={industries.titleLine1} muted={industries.titleLine2} />
+              <p>{industries.description}</p>
+            </div>
+          </div>
+          <SplitStage className="span-6 start-7 cv-solutions__visual">
+            <div className="frame frame--split frame--lit cv-chat-frame" role="img" aria-label="A WhatsApp enquiry about a site visit, answered from the CONVY shared inbox">
+              <Frag className="stage stage--fade-b" html={`<div class="at-rise to-edge" style="--w:440px;--ax:max(24px, 50% - 220px);--ay:48px">${enquiryChat}</div>`} />
+            </div>
+          </SplitStage>
+        </div>
+        <ul className="cv-solutions__list" data-reveal="">
+          {industries.items.map((it) => (
+            <li key={it.id} id={it.id}>
+              <h2 className="cv-solutions__name">{it.name}</h2>
+              <p>{it.body}</p>
+              <p className="cv-solutions__path">{it.path}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
