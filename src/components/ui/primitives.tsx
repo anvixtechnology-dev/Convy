@@ -34,7 +34,7 @@ export function Spotlight({ size = 420 }: { size?: number }) {
       ref={ref}
       aria-hidden
       className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-      style={{ background: `radial-gradient(${size}px circle at var(--sx, 50%) var(--sy, 50%), rgb(50 191 165 / 0.07), transparent 65%)` }}
+      style={{ background: `radial-gradient(${size}px circle at var(--sx, 50%) var(--sy, 50%), rgb(201 58 94 / 0.07), transparent 65%)` }}
     />
   );
 }
@@ -168,7 +168,7 @@ export function SectionHeading({
 type Variant = "primary" | "secondary" | "ghost";
 const variants: Record<Variant, string> = {
   primary:
-    "bg-accent text-on-accent shadow-[0_8px_24px_-12px_rgb(50_191_165/0.55)] hover:scale-[1.02] hover:bg-[#45cdb4] hover:shadow-[0_14px_34px_-12px_rgb(50_191_165/0.7)]",
+    "bg-accent text-on-accent shadow-[0_8px_24px_-12px_rgb(50_191_165/0.55)] hover:scale-[1.02] hover:bg-[#C93A5E] hover:shadow-[0_14px_34px_-12px_rgb(50_191_165/0.7)]",
   secondary: "border border-line bg-white/[0.02] text-fg hover:border-accent/40 hover:bg-accent/[0.06]",
   ghost: "text-fg hover:text-accent",
 };
@@ -287,9 +287,9 @@ export function PreviewFrame({
     <figure role="img" aria-label={label} className={cx("relative overflow-hidden rounded-xl border border-line bg-card shadow-frame", className)}>
       {chrome && (
         <div aria-hidden className="flex h-9 items-center gap-1.5 border-b border-line bg-surface px-3.5">
-          <span className="size-2.5 rounded-full bg-[#3a3d55]" />
-          <span className="size-2.5 rounded-full bg-[#3a3d55]" />
-          <span className="size-2.5 rounded-full bg-[#3a3d55]" />
+          <span className="size-2.5 rounded-full bg-[#3D2A30]" />
+          <span className="size-2.5 rounded-full bg-[#3D2A30]" />
+          <span className="size-2.5 rounded-full bg-[#3D2A30]" />
         </div>
       )}
       <div aria-hidden inert className={cx("pointer-events-none cursor-default select-none", bodyClassName)}>
@@ -314,9 +314,9 @@ export function Logo({ withTagline = false, tagline, taglineClass = "min-[400px]
   return (
     <span className="inline-flex items-center gap-3">
       <svg viewBox="0 0 32 32" className="size-8 shrink-0" aria-hidden>
-        <rect width="32" height="32" rx="8" fill="#32BFA5" />
-        <path d="M9 12a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4h-4l-4 3v-3.5A4 4 0 0 1 9 15z" fill="#141521" />
-        <circle cx="22" cy="22" r="3" fill="#20C96B" stroke="#141521" strokeWidth="1.5" />
+        <rect width="32" height="32" rx="8" fill="#B3264A" />
+        <path d="M9 12a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4h-4l-4 3v-3.5A4 4 0 0 1 9 15z" fill="#0B0708" />
+        <circle cx="22" cy="22" r="3" fill="#E8728E" stroke="#0B0708" strokeWidth="1.5" />
       </svg>
       <span className="flex flex-col leading-none">
         <span className="text-[17px] font-semibold tracking-[0.1em] text-fg">CONVY</span>
@@ -331,10 +331,10 @@ export function Logo({ withTagline = false, tagline, taglineClass = "min-[400px]
 /* Mock-UI atoms -------------------------------------------------------- */
 export function Avatar({ initials, tone = 0, size = "md" }: { initials: string; tone?: number; size?: "sm" | "md" }) {
   const tones = [
-    "bg-[#1f3a37] text-[#7fe0cc]",
+    "bg-[#3A1520] text-[#F4B3C2]",
     "bg-[#2a2d4d] text-[#a9b0ff]",
     "bg-[#3a3122] text-[#e8c27a]",
-    "bg-[#2c2e40] text-[#c3c7da]",
+    "bg-[#2E2025] text-[#D6C8CC]",
   ];
   return (
     <span

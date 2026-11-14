@@ -28,7 +28,7 @@ export function PricingCard({
           "group relative flex h-full flex-col overflow-hidden rounded-2xl border p-7 transition-[transform,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1",
           highlight
             ? "border-accent/40 bg-[linear-gradient(180deg,rgb(50_191_165/0.08),var(--color-card)_38%)] shadow-[0_20px_50px_-30px_rgb(50_191_165/0.45)] hover:border-accent/60"
-            : "border-line bg-card hover:border-[#4a4e68]",
+            : "border-line bg-card hover:border-[#4D343B]",
         )}
       >
         {highlight && (

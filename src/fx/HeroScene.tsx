@@ -79,7 +79,7 @@ export function HeroScene({ children }: { children: ReactNode }) {
         <Layer className="fx-l-campaign" z={70} delay={0.7}>
           <div className="fx-card">
             <div className="fx-card__head">
-              <span className="fx-dot fx-dot--teal" />
+              <span className="fx-dot fx-dot--accent" />
               Campaign · Diwali offer
             </div>
             <div className="fx-card__big">4,812</div>
@@ -110,7 +110,7 @@ export function HeroScene({ children }: { children: ReactNode }) {
         <Layer className="fx-l-ai" z={60} delay={1}>
           <div className="fx-card">
             <div className="fx-card__head">
-              <span className="fx-dot fx-dot--teal" />
+              <span className="fx-dot fx-dot--accent" />
               AI summary
             </div>
             <p className="fx-card__sum">Wants a Saturday site visit for the 3BHK in Baner.</p>

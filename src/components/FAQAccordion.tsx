@@ -57,7 +57,7 @@ export function FAQAccordion({ items, defaultOpen = 0 }: { items: Array<{ q: str
                   aria-hidden
                   className={cx(
                     "grid size-8 shrink-0 place-items-center rounded-full border transition-[transform,color,border-color,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
-                    isOpen ? "rotate-180 border-accent/50 bg-accent/10 text-accent" : "border-line text-muted group-hover:border-[#4a4e68] group-hover:text-fg",
+                    isOpen ? "rotate-180 border-accent/50 bg-accent/10 text-accent" : "border-line text-muted group-hover:border-[#4D343B] group-hover:text-fg",
                   )}
                 >
                   <ChevronDown className="size-4" />

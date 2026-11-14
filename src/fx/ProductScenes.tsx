@@ -174,7 +174,7 @@ const overlays: Partial<Record<ModuleKey, ReactNode>> = {
     <Over className="fx-o-ai" z={110}>
       <div className="fx-card fx-type">
         <div className="fx-card__head">
-          <span className="fx-dot fx-dot--teal" />
+          <span className="fx-dot fx-dot--accent" />
           Summary, for the next agent
         </div>
         <p>

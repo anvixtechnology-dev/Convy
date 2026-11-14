@@ -88,7 +88,7 @@ export function Particles({ className }: { className?: string }) {
         if (p.x > 1.02) p.x = -0.02;
         ctx.beginPath();
         ctx.arc(p.x * w, p.y * h, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(50, 191, 165, ${p.a})`;
+        ctx.fillStyle = `rgba(232, 114, 142, ${p.a})`;
         ctx.fill();
       }
       raf = requestAnimationFrame(draw);
@@ -101,4 +101,36 @@ export function Particles({ className }: { className?: string }) {
     };
   }, [reduced]);
   return <canvas ref={ref} className={`fx-particles ${className ?? ""}`} aria-hidden="true" />;
+}
+
+const ConnectScene = lazy(() => import("./ConnectScene"));
+
+/**
+ * The "We connect. We convert." network: live 3D from 640px up with motion allowed and WebGL,
+ * else a still burgundy core drawn in CSS, so the section never stands empty.
+ */
+export function ConnectSceneLazy() {
+  const reduced = useReducedMotion();
+  const [ok, setOk] = useState(false);
+  useEffect(() => {
+    const wide = window.matchMedia("(min-width: 640px)").matches;
+    let gl = false;
+    try {
+      gl = !!document.createElement("canvas").getContext("webgl2");
+    } catch {
+      gl = false;
+    }
+    setOk(wide && gl);
+  }, []);
+  return (
+    <div className="fx-connect" aria-hidden="true">
+      {reduced || !ok ? (
+        <div className="fx-connect__still" />
+      ) : (
+        <Suspense fallback={<div className="fx-connect__still" />}>
+          <ConnectScene />
+        </Suspense>
+      )}
+    </div>
+  );
 }

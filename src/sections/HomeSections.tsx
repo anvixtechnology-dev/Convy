@@ -3,7 +3,7 @@
  *
  * type: software (site-kind software)
  * deal: hero centred, nav nav-mega, close close-word, footer footer-dark, rhythm dark-band,
- *       buttons arrow, mark dots, palette the brand's own (brief Part 2: #141521 ground, teal #32bfa5),
+ *       buttons arrow, mark dots, palette the brand's own (brief Part 2: #0B0708 ground, teal #B3264A),
  *       type instrument (Instrument Sans), moment letters-assemble (the statement section)
  * The page is a stack of screens: the hero alone on the first, every other section one or two.
  *
@@ -13,7 +13,7 @@ import { useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { EASE, Magnetic, Words } from "../fx/motion";
-import { GeoFieldLazy, Particles } from "../fx/Ambient";
+import { ConnectSceneLazy, GeoFieldLazy, Particles } from "../fx/Ambient";
 import { HeroScene } from "../fx/HeroScene";
 import { ProductStage, SplitStage } from "../fx/ProductScenes";
 import { hero, benefits, process, workspace, features, industries, gettingStarted, security, journeys } from "../content/site";
@@ -129,7 +129,7 @@ export function HeroSection() {
               <div className="cv-win__body">
                 <div className="cv-inbox">
                   <div className="q">Search conversations</div>
-                  <div className="t is-on"><i style={{ background: "#8fe0cd" }}>PN</i><b>Priya Nair</b><time>10:42</time><span>Is the 3BHK in Baner still available?</span></div>
+                  <div className="t is-on"><i style={{ background: "#F4B3C2" }}>PN</i><b>Priya Nair</b><time>10:42</time><span>Is the 3BHK in Baner still available?</span></div>
                   <div className="t"><i style={{ background: "#f3c98b" }}>RK</i><b>Rahul Kulkarni</b><time>10:31</time><span>Can you send the brochure again?</span></div>
                   <div className="t"><i style={{ background: "#a9c4f0" }}>FS</i><b>Fatima Shaikh</b><time>10:12</time><span>Resolved · order 2219 delivered</span></div>
                 </div>
@@ -309,7 +309,8 @@ export function WorkspaceTour({ headingLevel = "h2" }: { headingLevel?: H }) {
 /* ================================================================== 5 The statement (letters-assemble) */
 export function StatementSection() {
   return (
-    <section className="section" id="statement" data-moment="letters-assemble" aria-labelledby="statement-h">
+    <section className="section fx-statement" id="statement" data-moment="letters-assemble" aria-labelledby="statement-h">
+      <ConnectSceneLazy />
       <div className="wrap">
         <h2 id="statement-h" className="mo-la__type">
           We connect. We convert.

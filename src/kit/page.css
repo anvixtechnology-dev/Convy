@@ -6,43 +6,43 @@
 /* ------------------------------------------------ the lit ground behind UI: the brand's deep teal
    (the kit's sand, sky and sage are light grounds; Convy's brief sets a dark page with a teal accent) */
 html {
-  --ground-bg: #bcd8d1; --ground-surface: #d0e5df; --ground-ink: #0f2d28; --ground-muted: #3b5d56; --ground-accent: #1d7f6c;
+  --ground-bg: #4A1022; --ground-surface: #5A1426; --ground-ink: #F7F1F2; --ground-muted: #E6C9D1; --ground-accent: #E8728E;
 }
 
 /* ------------------------------------------------ the hero window (the centred hero's one window) */
-/* the frame's lit ground: the brand's teal over the page ground, drawn once, no motion */
+/* the frame's lit ground: burgundy light over the black page ground, drawn once, no motion */
 .cv-hero-ground {
   background:
-    radial-gradient(70% 90% at 50% 0%, rgb(50 191 165 / 0.34), transparent 70%),
-    radial-gradient(60% 70% at 85% 100%, rgb(32 201 107 / 0.16), transparent 70%),
-    linear-gradient(#1d2a33, #172028 60%, #141521);
+    radial-gradient(70% 90% at 50% 0%, rgb(201 58 94 / 0.34), transparent 70%),
+    radial-gradient(60% 70% at 85% 100%, rgb(232 114 142 / 0.16), transparent 70%),
+    linear-gradient(#2A1820, #1A0D11 60%, #0B0708);
 }
-.cv-win { background: #191b2b; color: #eceef5; border-radius: 12px; overflow: hidden; font: 400 14px/1.4 var(--font-text);
+.cv-win { background: #140C0E; color: #F1E8EA; border-radius: 12px; overflow: hidden; font: 400 14px/1.4 var(--font-text);
   box-shadow: 0 0 0 1px rgb(255 255 255 / .08), 0 30px 70px -30px rgb(0 0 0 / .8); text-align: left; }
-.cv-win__bar { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; border-bottom: 1px solid rgb(255 255 255 / .07); font-size: 13px; color: #a3a8bd; }
-.cv-win__bar b { color: #f5f5fa; font-weight: 500; }
+.cv-win__bar { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; border-bottom: 1px solid rgb(255 255 255 / .07); font-size: 13px; color: #B3A2A7; }
+.cv-win__bar b { color: #F7F1F2; font-weight: 500; }
 .cv-win__bar .sp { flex: 1; }
-.cv-win__dots { display: flex; gap: 6px; } .cv-win__dots i { width: 10px; height: 10px; border-radius: 50%; background: #3a3d55; }
+.cv-win__dots { display: flex; gap: 6px; } .cv-win__dots i { width: 10px; height: 10px; border-radius: 50%; background: #3D2A30; }
 .cv-win__body { display: grid; grid-template-columns: 260px 1fr; min-height: 420px; }
 .cv-inbox { border-right: 1px solid rgb(255 255 255 / .07); padding: 10px; display: grid; align-content: start; gap: 2px; }
-.cv-inbox .q { height: 34px; margin-bottom: 6px; border-radius: 9px; background: rgb(255 255 255 / .06); display: flex; align-items: center; padding: 0 10px; color: #8c91a9; font-size: 13px; }
+.cv-inbox .q { height: 34px; margin-bottom: 6px; border-radius: 9px; background: rgb(255 255 255 / .06); display: flex; align-items: center; padding: 0 10px; color: #978489; font-size: 13px; }
 .cv-inbox .t { display: grid; grid-template-columns: 30px 1fr auto; gap: 1px 10px; padding: 9px 8px; border-radius: 9px; font-size: 13px; }
-.cv-inbox .t.is-on { background: rgb(50 191 165 / .12); }
-.cv-inbox .t i { grid-row: 1 / span 2; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font: 600 13px/1 var(--font-text); font-style: normal; color: #141521; }
-.cv-inbox .t b { font-weight: 500; color: #f5f5fa; }
-.cv-inbox .t time { color: #8c91a9; font-size: 13px; }
-.cv-inbox .t span { grid-column: 2 / -1; color: #a3a8bd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.cv-convo { display: grid; min-width: 0; align-content: start; background: #141521; }
+.cv-inbox .t.is-on { background: rgb(201 58 94 / .12); }
+.cv-inbox .t i { grid-row: 1 / span 2; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font: 600 13px/1 var(--font-text); font-style: normal; color: #0B0708; }
+.cv-inbox .t b { font-weight: 500; color: #F7F1F2; }
+.cv-inbox .t time { color: #978489; font-size: 13px; }
+.cv-inbox .t span { grid-column: 2 / -1; color: #B3A2A7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cv-convo { display: grid; min-width: 0; align-content: start; background: #0B0708; }
 .cv-chat { display: grid; gap: 8px; align-content: start; padding: 14px 18px; font-size: 14px; }
 .cv-msg { max-width: 82%; padding: 10px 14px; border-radius: 16px; line-height: 1.45; }
 .cv-msg small { display: inline; margin-left: 8px; font-size: 13px; opacity: .65; white-space: nowrap; }
-.cv-msg--in { justify-self: start; background: #24263a; color: #f5f5fa; border-bottom-left-radius: 6px; }
-.cv-msg--out { justify-self: end; background: #1f4a42; color: #f5f5fa; border-bottom-right-radius: 6px; }
-.cv-tool { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #8fe0cd; }
+.cv-msg--in { justify-self: start; background: #24151A; color: #F7F1F2; border-bottom-left-radius: 6px; }
+.cv-msg--out { justify-self: end; background: #4A1424; color: #F7F1F2; border-bottom-right-radius: 6px; }
+.cv-tool { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #F4B3C2; }
 .cv-tool::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
 .cv-acts { display: flex; gap: 8px; justify-self: end; }
-.cv-acts span { height: 30px; padding: 0 12px; border-radius: 99px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 500; background: rgb(255 255 255 / .08); color: #eceef5; }
-.cv-acts span:first-child { background: #32bfa5; color: #141521; }
+.cv-acts span { height: 30px; padding: 0 12px; border-radius: 99px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 500; background: rgb(255 255 255 / .08); color: #F1E8EA; }
+.cv-acts span:first-child { background: #B3264A; color: #0B0708; }
 @media (max-width: 1023px) { .cv-win__body { grid-template-columns: 1fr; } .cv-inbox { display: none; } }
 @media (max-width: 639px) { .cv-win__bar .sp ~ span { display: none; } .cv-msg { max-width: 92%; } }
 
@@ -101,7 +101,7 @@ html {
 .cv-ai__facts dd { margin: 2px 0 0; font-size: 13px; font-weight: 500; color: var(--u-ink); }
 .cv-ai__acts { display: flex; gap: 8px; margin: 16px 16px 0; }
 .cv-ai__acts span { height: 30px; padding: 0 12px; border-radius: 99px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 500; border: 1px solid var(--u-line); color: var(--u-ink); }
-.cv-ai__acts span:last-child { background: #32bfa5; border-color: #32bfa5; color: #141521; }
+.cv-ai__acts span:last-child { background: #B3264A; border-color: #B3264A; color: #0B0708; }
 
 /* ------------------------------------------------ activity log */
 .cv-log .ui-head { padding: 12px 16px; border-bottom: 1px solid var(--u-line); }
@@ -181,4 +181,4 @@ html {
 
 /* a product window on a lit frame stays a dark window with light text: the kit takes its surface
    from the page's (dark) card but its ink from the frame's (dark) ground ink */
-.frame--lit .ui { --fx-ink: #f5f5fa; --fx-muted: #b5b9cd; }
+.frame--lit .ui { --fx-ink: #F7F1F2; --fx-muted: #C9B8BD; }

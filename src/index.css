@@ -10,21 +10,21 @@
 
 @theme {
   /* CONVY design system (source: brief Part 2) */
-  --color-page: #141521;        /* main background */
-  --color-surface: #191b2b;     /* secondary background */
-  --color-card: #1c1e2e;        /* card background */
-  --color-elevated: #24263a;    /* elevated background */
-  --color-accent: #32bfa5;      /* primary accent — teal */
-  --color-accent-2: #20c96b;    /* secondary accent — mint green */
-  --color-fg: #f5f5fa;          /* primary text */
-  --color-muted: #b5b9cd;       /* secondary text */
-  --color-line: #34374d;        /* border */
+  --color-page: #0B0708;        /* main background */
+  --color-surface: #140C0E;     /* secondary background */
+  --color-card: #1A1013;        /* card background */
+  --color-elevated: #24151A;    /* elevated background */
+  --color-accent: #CC3D62;      /* burgundy, light enough to read as text on black */
+  --color-accent-2: #E8728E;    /* secondary accent — rose */
+  --color-fg: #F7F1F2;          /* primary text */
+  --color-muted: #C9B8BD;       /* secondary text */
+  --color-line: #33242A;        /* border */
 
   /* Derived */
-  --color-subtle: #8c91a9;                       /* tertiary text (≥4.5:1 on page) */
-  --color-line-soft: #2a2c40;                    /* hairline inside cards */
-  --color-accent-soft: rgb(50 191 165 / 0.12);   /* teal tint */
-  --color-on-accent: #072620;                    /* text on teal buttons */
+  --color-subtle: #978489;                       /* tertiary text (≥4.5:1 on page) */
+  --color-line-soft: #2A1C21;                    /* hairline inside cards */
+  --color-accent-soft: rgb(201 58 94 / 0.12);   /* burgundy tint */
+  --color-on-accent: #FFFFFF;                    /* text on burgundy buttons */
 
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Code", Menlo, Consolas, monospace;
@@ -76,9 +76,9 @@
     );
   }
 
-  /* Teal → mint text gradient that drifts slowly */
+  /* Burgundy → rose text gradient that drifts slowly */
   .text-shimmer {
-    background: linear-gradient(100deg, #32bfa5 0%, #20c96b 35%, #5fd6c0 55%, #32bfa5 80%);
+    background: linear-gradient(100deg, #B3264A 0%, #E8728E 35%, #E87A93 55%, #B3264A 80%);
     background-size: 220% 100%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -132,8 +132,8 @@
 }
 /* Workflow: a highlight that walks through the nodes (5 nodes × 0.9s) */
 @keyframes node-walk {
-  0%, 16% { border-color: rgb(50 191 165 / 0.7); box-shadow: 0 0 0 3px rgb(50 191 165 / 0.12); }
-  24%, 100% { border-color: var(--color-line); box-shadow: 0 0 0 0 rgb(50 191 165 / 0); }
+  0%, 16% { border-color: rgb(201 58 94 / 0.7); box-shadow: 0 0 0 3px rgb(201 58 94 / 0.12); }
+  24%, 100% { border-color: var(--color-line); box-shadow: 0 0 0 0 rgb(201 58 94 / 0); }
 }
 .node-walk {
   animation: node-walk 4.5s ease-in-out infinite;
@@ -150,8 +150,8 @@
 }
 .ambient::before {
   background:
-    radial-gradient(900px 520px at 78% -8%, rgb(50 191 165 / 0.09), transparent 70%),
-    radial-gradient(700px 500px at -10% 30%, rgb(32 201 107 / 0.04), transparent 70%);
+    radial-gradient(900px 520px at 78% -8%, rgb(201 58 94 / 0.09), transparent 70%),
+    radial-gradient(700px 500px at -10% 30%, rgb(232 114 142 / 0.04), transparent 70%);
 }
 .ambient::after {
   opacity: 0.035;
