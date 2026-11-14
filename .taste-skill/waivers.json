@@ -1,0 +1,4 @@
+[
+  { "check": "copy-headings", "target": "h2#workspace-h", "reason": "the section headings are the client's approved copy, kept verbatim from the brief (src/content/site.ts); the client asked for no rewording" },
+  { "check": "cut-text", "target": "dg-node--tile", "reason": "the kit's diagram.js lays the lanes diagram out as icon tiles at 342px with each caption placed under its tile by design; the phone shot shows every caption whole on the ground" }
+]

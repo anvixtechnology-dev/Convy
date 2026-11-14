@@ -1,0 +1,236 @@
+/*
+  CONVY footer. Unlayered, so it sits over the kit's layer; every rule is scoped to .cv-foot.
+  Brand tokens from the brief: navy #141521, surface #191B2B, teal #32BFA5, green #20C96B,
+  headings #F5F5FA, muted #B5B9CD, borders #34374D.
+*/
+.cv-foot {
+  --f-bg: #141521;
+  --f-surface: #191b2b;
+  --f-teal: #32bfa5;
+  --f-green: #20c96b;
+  --f-ink: #f5f5fa;
+  --f-muted: #b5b9cd;
+  --f-quiet: #8c91a9; /* 6:1 on the navy */
+  --f-line: #34374d;
+  --f-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background: var(--f-bg);
+  border-top: 1px solid var(--f-line);
+  color: var(--f-muted);
+  padding: 96px 0 40px;
+}
+
+/* ---------------------------------------------------------------- ambient light */
+.cv-foot__light {
+  position: absolute;
+  z-index: -1;
+  inset: -20% auto auto -10%;
+  width: min(1100px, 120vw);
+  aspect-ratio: 16 / 10;
+  pointer-events: none;
+  background:
+    radial-gradient(closest-side at 38% 58%, rgb(50 191 165 / 0.16), transparent 72%),
+    radial-gradient(closest-side at 62% 70%, rgb(32 201 107 / 0.06), transparent 70%);
+  filter: blur(8px);
+  animation: cv-foot-drift 22s ease-in-out infinite alternate;
+}
+/* a faint second light low on the right, so the navy never reads flat */
+.cv-foot::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: -15%;
+  bottom: -40%;
+  width: 70vw;
+  height: 70vw;
+  max-width: 900px;
+  max-height: 900px;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgb(25 27 43 / 0.9), transparent 70%);
+}
+@keyframes cv-foot-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1);       opacity: 0.85; }
+  50%  { transform: translate3d(4%, -3%, 0) scale(1.06); opacity: 1; }
+  100% { transform: translate3d(-3%, 2%, 0) scale(0.98); opacity: 0.8; }
+}
+
+/* ---------------------------------------------------------------- the close */
+.cv-foot__close {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+}
+.cv-foot .cv-foot__close h2 {
+  font: var(--display-weight, 500) clamp(28px, 3.2vw, 44px) / 1.1 var(--font-display);
+  letter-spacing: -0.028em;
+  color: var(--f-ink);
+  max-width: 20ch;
+}
+.cv-foot__close p {
+  margin-top: 12px;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--f-muted);
+}
+.cv-foot__close .btn { flex: none; }
+
+/* ---------------------------------------------------------------- separators */
+.cv-foot__rule {
+  height: 1px;
+  margin: 56px 0;
+  background: linear-gradient(90deg, rgb(50 191 165 / 0.45), var(--f-line) 28%, var(--f-line) 72%, rgb(52 55 77 / 0.4));
+  transform-origin: left center;
+}
+
+/* ---------------------------------------------------------------- brand and columns */
+.cv-foot__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) repeat(4, minmax(0, 1fr));
+  column-gap: 48px;
+  row-gap: 48px;
+}
+.cv-foot__brand { max-width: 380px; }
+
+.cv-foot__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: 500 22px / 1 var(--font-display);
+  letter-spacing: 0.02em;
+  color: var(--f-ink);
+  border-radius: 8px;
+  transition: filter 0.4s var(--f-ease), color 0.3s var(--f-ease);
+}
+.cv-foot__logo .mark { width: 22px; height: 22px; }
+.cv-foot__logo:hover,
+.cv-foot__logo:focus-visible {
+  filter: drop-shadow(0 0 14px rgb(50 191 165 / 0.45));
+}
+
+.cv-foot__tagline {
+  margin-top: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--f-teal);
+}
+.cv-foot__desc {
+  margin-top: 20px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--f-muted);
+  max-width: 40ch;
+}
+
+.cv-foot .cv-foot__col h3 {
+  font: 500 12px / 1.4 var(--font-text);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--f-quiet);
+  margin-bottom: 20px;
+}
+.cv-foot__col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+/* ---------------------------------------------------------------- links */
+.cv-foot__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--f-muted);
+  text-decoration: none;
+  transition: color 0.2s var(--f-ease);
+}
+.cv-foot__label {
+  background-image: linear-gradient(var(--f-teal), var(--f-teal));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  padding-bottom: 2px;
+  transition: background-size 0.3s var(--f-ease);
+}
+.cv-foot__arrow {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: var(--f-teal);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.2s var(--f-ease), transform 0.25s var(--f-ease);
+}
+.cv-foot__link:hover,
+.cv-foot__link:focus-visible { color: var(--f-ink); }
+.cv-foot__link:hover .cv-foot__label,
+.cv-foot__link:focus-visible .cv-foot__label { background-size: 100% 1px; }
+.cv-foot__link:hover .cv-foot__arrow,
+.cv-foot__link:focus-visible .cv-foot__arrow { opacity: 1; transform: translateX(2px); }
+.cv-foot__link:focus-visible {
+  outline: 2px solid var(--f-teal);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------------------------------------------------------------- copyright bar */
+.cv-foot__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 14px;
+  color: var(--f-quiet);
+}
+.cv-foot__bar-tag {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color 0.3s var(--f-ease);
+}
+.cv-foot__bar-tag:hover { color: var(--f-teal); }
+.cv-foot__rule + .cv-foot__bar { margin-top: -24px; }
+
+/* ---------------------------------------------------------------- tablet */
+@media (max-width: 1023px) {
+  .cv-foot { padding-top: 80px; }
+  .cv-foot__main { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 32px; }
+  .cv-foot__brand { grid-column: 1 / -1; max-width: 560px; }
+  .cv-foot__rule { margin: 48px 0; }
+}
+
+/* ---------------------------------------------------------------- phone */
+@media (max-width: 639px) {
+  .cv-foot { padding: 64px 0 32px; }
+  .cv-foot__close { flex-direction: column; align-items: stretch; gap: 24px; }
+  .cv-foot__close .btn { width: 100%; justify-content: center; }
+  .cv-foot__main { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; row-gap: 40px; }
+  .cv-foot__link { min-height: 44px; } /* touch targets */
+  .cv-foot__col ul { gap: 0; }
+  .cv-foot__rule { margin: 40px 0; }
+  .cv-foot__rule + .cv-foot__bar { margin-top: -16px; }
+  .cv-foot__bar { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .cv-foot__light { width: 160vw; inset: -10% auto auto -40%; }
+}
+
+/* ---------------------------------------------------------------- less motion */
+@media (prefers-reduced-motion: reduce) {
+  .cv-foot__light { animation: none; }
+  .cv-foot__link,
+  .cv-foot__label,
+  .cv-foot__arrow,
+  .cv-foot__logo,
+  .cv-foot__bar-tag { transition: none; }
+  .cv-foot__arrow { transform: none; }
+}

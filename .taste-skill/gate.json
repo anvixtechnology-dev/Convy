@@ -1,0 +1,535 @@
+{
+ "start": "2026-11-14T14:56:26.540Z",
+ "round": 3,
+ "idle": 0,
+ "errors": 0,
+ "status": "open",
+ "history": [
+  {
+   "at": "2026-11-14T15:25:31.660Z",
+   "mode": "manual",
+   "status": "fail",
+   "fails": 28,
+   "round": 1,
+   "reused": false,
+   "stopHookActive": false
+  },
+  {
+   "at": "2026-11-14T15:44:33.514Z",
+   "mode": "manual",
+   "status": "fail",
+   "fails": 8,
+   "round": 2,
+   "reused": false,
+   "stopHookActive": false
+  },
+  {
+   "at": "2026-11-14T15:56:52.840Z",
+   "mode": "manual",
+   "status": "open",
+   "fails": 1,
+   "round": 3,
+   "reused": false,
+   "stopHookActive": false
+  }
+ ],
+ "max": 3,
+ "marker": {
+  "page": "dist/index.html",
+  "dir": "C:\\Users\\cheta\\OneDrive\\Documents\\ANVIX TECHNOLOGIES\\projects\\Convy\\Convy",
+  "kind": "software",
+  "start": "2026-11-14T14:56:26.540Z",
+  "by": "start.mjs",
+  "url": null,
+  "root": "dist",
+  "category": "shared WhatsApp inbox for business teams",
+  "primary": "Open Convy"
+ },
+ "manual": true,
+ "roundKey": "051ecd6f59dcf5fc:ba4741b1",
+ "roundFree": false,
+ "idleFree": false,
+ "blockKey": null,
+ "fp": "051ecd6f59dcf5fc",
+ "page": "dist/index.html",
+ "found": {
+  "fails": [
+   {
+    "check": "copy-headings",
+    "where": "h2#workspace-h \"More than messages. A connected way to w\"",
+    "msg": "\"More than messages. A connected way to work.\" names no product, part, place or section (8 headings like it; at most one brand line per page) (and 7 more like it: \"We connect. We convert.\", \"Different industries. Th\", \"A clear path to your fir\", \"Set up your workspace.\", ...)",
+    "fix": "name the thing in every heading: the product, a part, the place or a section noun",
+    "widths": [
+     1440
+    ],
+    "from": "consistency",
+    "ids": [
+     "copy-headings"
+    ],
+    "wheres": [
+     "h2#workspace-h \"More than messages. A connected way to w\""
+    ]
+   },
+   {
+    "check": "cut-text",
+    "where": "div.dg-nodes > div.dg-node.dg-node--tile:nth-of-type(1) > span.dg-cap > span.dg-cap__l \"WhatsApp\"",
+    "msg": "runs past the edge of its box div.panel.cv-diagram > div.dg > div.dg-nodes > div.dg-node.dg-node--tile:nth-of-type(1) (and 3 more like it: \"Inbox\", \"Campaign\", \"Workflow\")",
+    "fix": "give the text room: no overflow clipping a line, no line past its box",
+    "widths": [
+     390
+    ],
+    "from": "consistency",
+    "ids": [
+     "cut-text"
+    ],
+    "wheres": [
+     "div.dg-nodes > div.dg-node.dg-node--tile:nth-of-type(1) > span.dg-cap > span.dg-cap__l \"WhatsApp\""
+    ]
+   },
+   {
+    "check": "screen-height",
+    "where": "#faq section.section \"Questions, answered.What teams a\"",
+    "msg": "1746px, 2.07 screens; a section is exactly one or two (--h), or on a phone at least one that its content fills",
+    "fix": "make the section exactly one or two screens (--h: 1 or 2)",
+    "widths": [
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "screen-height"
+    ],
+    "wheres": [
+     "#faq section.section \"Questions, answered.What teams a\""
+    ]
+   }
+  ],
+  "warns": [
+   {
+    "check": "overlap-text",
+    "where": "div.at-rise.to-edge > div.ui.ui-doc > aside.ui-doc__note.ui-panel > div.ui-doc__msg \"Filled from the customer name column at \"",
+    "msg": "inside div.ui.ui-doc, a box sits on the mock's own text and hides it mid-line (\"Track it with the button below\")",
+    "fix": "move the box off the text (or the text off the box)",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "cut-text",
+    "where": "div.cv-win__body > div.cv-inbox > div.t:nth-of-type(2) > span \"Is the 3BHK in Baner still available?\"",
+    "msg": "shortened with an ellipsis (and 1 more like it: \"Can you send the brochur\")",
+    "fix": "give the text room: no overflow clipping a line, no line past its box",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "cut-text",
+    "where": "div.ui-win__main > ul.ui-win__rows > li.ui-win__row:nth-of-type(1) > span.ui-win__sub \"Site visit, Saturday\"",
+    "msg": "cut 31px at the right by the overflow of section#benefits > div.wrap > div.grid.cv-cards > article.card.card--row:nth-of-type(1): a fragment run out through its panel's edge (and 2 more like it: \"Brochure, 2BHK\", \"Order 2219, delivery\")",
+    "fix": "give the text room: no overflow clipping a line, no line past its box",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "text-only",
+    "where": "section#pricing \"Plans that grow with each business. Pric\"",
+    "msg": "the section is only text: no picture, icon, mock or effect in it",
+    "fix": "give the section a visual: a photograph that fits, the real icons, or a UI fragment on a ground",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "card-visual",
+    "where": "section#pricing > div.wrap > div.grid.cv-plans \"Starter Small teams starting with WhatsA\"",
+    "msg": "4 cards hold only text: no picture, icon, UI fragment or effect in any of them",
+    "fix": "give the cards a visual: an inset panel with a UI fragment, a photograph or real icons",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "button-styles",
+    "where": "button#tab-templates \"Template studio\"",
+    "msg": "the selected tab \"Template studio\" is drawn as a filled soft in #141521 (its sliding indicator), a fill none of the page's buttons use (#32bfa5): it reads as one more button style",
+    "fix": "draw the selected tab as a line under its word, or in the primary button's fill",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "same-action",
+    "where": "div.wrap > div.stack-6 > div.section-head--split > a.link \"Book a demo\"",
+    "msg": "\"Book a demo\" is a button in one place and a text link in another: one action in two looks",
+    "fix": "show one action one way: the same button wherever it repeats, or a text link everywhere",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "copy-headings",
+    "where": "div.wrap > div.grid.cv-cards > article.card.card--row:nth-of-type(1) > h3 \"Keep conversations together.\"",
+    "msg": "the card title \"Keep conversations together.\" names no product, part, place or section (4 card titles like it) (and 3 more like it: \"Make ownership visible.\", \"Access with clear bounda\", \"A record of important ac\")",
+    "fix": "name the thing in every heading: the product, a part, the place or a section noun",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "text-contrast",
+    "where": "div.at-rise.to-edge > div.ui.ui-panel > div.ui-head > div.ui-title \"Priya Nair\"",
+    "msg": "43 lines of text in drawn mocks read under 4.5:1 (10 colour pairs), the worst \"Priya Nair\" in #0f2d28 on #262830 at 1:1",
+    "fix": "lift the mocks' muted text (labels, meta, initials) to 4.5:1 on their own panel, or set it larger",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "section-gaps",
+    "where": "section#benefits / section#process",
+    "msg": "271px between these sections, +42% against the median 191px",
+    "fix": "use one gap between sections (all within 25% of each other)",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "section-gaps",
+    "where": "section#industries / section#security",
+    "msg": "252px between these sections, +32% against the median 191px",
+    "fix": "use one gap between sections (all within 25% of each other)",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "links",
+    "where": "div.wrap.nav__bar > nav.nav__links > div.nav__item:nth-of-type(1) > a.nav__link \"Product\"",
+    "msg": "\"Product\" goes to /product, which does not exist here",
+    "fix": "point every link at a real section, page or file",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "links",
+    "where": "div.nav__item:nth-of-type(1) > div.nav__menu > div.wrap.grid > a.menu-card.span-3 \"The CONVY platformEvery module, one work\"",
+    "msg": "\"The CONVY platformEvery module, one work\" goes to /platform, which does not exist here",
+    "fix": "point every link at a real section, page or file",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "links",
+    "where": "div.wrap.nav__bar > nav.nav__links > div.nav__item:nth-of-type(3) > a.nav__link \"Solutions\"",
+    "msg": "\"Solutions\" goes to /solutions, which does not exist here",
+    "fix": "point every link at a real section, page or file",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "links",
+    "where": "div.wrap.nav__bar > nav.nav__links > div.nav__item:nth-of-type(4) > a.nav__link \"Security\"",
+    "msg": "\"Security\" goes to /security, which does not exist here",
+    "fix": "point every link at a real section, page or file",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "links",
+    "where": "div.wrap.nav__bar > nav.nav__links > div.nav__item:nth-of-type(5) > a.nav__link \"Pricing\"",
+    "msg": "\"Pricing\" goes to /pricing, which does not exist here",
+    "fix": "point every link at a real section, page or file",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "links",
+    "where": "div.wrap.nav__bar > nav.nav__links > div.nav__item:nth-of-type(6) > a.nav__link \"FAQ\"",
+    "msg": "\"FAQ\" goes to /faq, which does not exist here",
+    "fix": "point every link at a real section, page or file",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "links",
+    "where": "div.closing__links > div.footer__legal > span > a:nth-of-type(1) \"Privacy\"",
+    "msg": "\"Privacy\" goes to /privacy, which does not exist here",
+    "fix": "point every link at a real section, page or file",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "links",
+    "where": "div.closing__links > div.footer__legal > span > a:nth-of-type(2) \"Terms\"",
+    "msg": "\"Terms\" goes to /terms, which does not exist here",
+    "fix": "point every link at a real section, page or file",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "label-centre",
+    "where": "header.nav > div.wrap.nav__bar > div.nav__actions > a.btn.btn--primary \"Open Convy\"",
+    "msg": "its label sits 18px off-centre (25px of room at the left, 43px at the right)",
+    "fix": "centre the label in its button, or fill the empty side with an icon",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "fade-cut",
+    "where": "ul.ui-toggles__list > li.ui-tg:nth-of-type(5) > span.ui-tg__text > span.ui-tg__label \"Add private notes\"",
+    "msg": "a line of div.ui.ui-panel fades out under its edge (\"Add private notes\"): drawn at a fraction of #f5f5fa on #262830, half-erased",
+    "fix": "fit the mock's rows inside its panel (fewer rows, a taller panel), or end the fade below the last whole row: no row half-erased",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "copy-length",
+    "where": "section#faq \"Questions, answered.\"",
+    "msg": "2 sections over 90 words a screen outside the UI mocks (\"Questions, answered.\" 215, \"Plans that grow with eac\" 149); 83 words a screen across the page (830 words in 10 screens): a tech page says it in about 80 or fewer",
+    "fix": "cut every section to its heading, one line and the product UI: the UI says the rest; no second paragraph, no list of feature sentences",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "action-count",
+    "where": "div.wrap > div.closing__cta.close--word > div.section-head--split > a.btn.btn--primary",
+    "msg": "the main action \"Open Convy\" is on 6 buttons and links: the nav, the hero and the closing call carry it; elsewhere a section has its own action",
+    "fix": "the main action in the nav, the hero and the closing call; give the other sections their own action",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "visual-caption",
+    "where": "section#security > div.wrap > p.t-small.muted \"Convy does not currently claim third-par\"",
+    "msg": "a muted 14px line of 1 row sits 24px under the diagram: it reads as a caption: \"Convy does not currently claim third-par...\"; no caption or description under any image, render or visual (house rule)",
+    "fix": "take the line away: no caption or description under, over or on any image, render or visual; a licence credit goes in one footer line",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "action-repeat",
+    "where": "header.nav > div.wrap.nav__bar > div.nav__actions > a.nav__link:nth-of-type(1) \"book a demo\"",
+    "msg": "\"book a demo\" shows 2 times on the first screen at 1440px (nav, hero): the nav's button and the hero's; nothing else on the screen may repeat it",
+    "fix": "show the action once a screen besides the nav's button: the hero's, the close's or the phone bar's, never all at once",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "action-repeat",
+    "where": "header.nav > div.wrap.nav__bar > div.nav__actions > a.btn.btn--primary:nth-of-type(2) \"open convy\"",
+    "msg": "\"open convy\" shows 2 times on the first screen at 1440px (nav, hero): the nav's button and the hero's; nothing else on the screen may repeat it",
+    "fix": "show the action once a screen besides the nav's button: the hero's, the close's or the phone bar's, never all at once",
+    "widths": [
+     1440
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "card-visual",
+    "where": "section#pricing > div.wrap > div.grid.cv-plans \"Starter ₹1,999 Open Convy 3 users 1 What\"",
+    "msg": "4 cards hold only text: no picture, icon, UI fragment or effect in any of them",
+    "fix": "give the cards a visual: an inset panel with a UI fragment, a photograph or real icons",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "cta",
+    "where": "section#benefits \"Your customers see one business. Your te\"",
+    "msg": "a section over 1.5 screens long with no link or button in it",
+    "fix": "add the action: a button in the hero, one on every priced item, one in the closing section",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "cta",
+    "where": "section#process \"Customer work, connected.\"",
+    "msg": "a section over 1.5 screens long with no link or button in it",
+    "fix": "add the action: a button in the hero, one on every priced item, one in the closing section",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "cta",
+    "where": "section#industries \"Different industries. The same need to c\"",
+    "msg": "a section over 1.5 screens long with no link or button in it",
+    "fix": "add the action: a button in the hero, one on every priced item, one in the closing section",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "section-gaps",
+    "where": "main#top > section.hero.hero--centred / section#benefits",
+    "msg": "118px between these sections, -28% against the median 164px",
+    "fix": "use one gap between sections (all within 25% of each other)",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "section-gaps",
+    "where": "section#security / section#pricing",
+    "msg": "244px between these sections, +49% against the median 164px",
+    "fix": "use one gap between sections (all within 25% of each other)",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "section-gaps",
+    "where": "section#process / section#workspace",
+    "msg": "uneven space at the edge of a band: 48px outside its edge, 94px inside it (the space on either side of a change of ground reads as one gap only when the two match)",
+    "fix": "use one gap between sections (all within 25% of each other)",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "grounds",
+    "where": "section#workspace \"More than messages. A connected way to w\"",
+    "msg": "4 flat grounds across the page (#141521 section x9, #191b2b band x6, #f5f5fa section, #090911 footer): three at most (the base, a surface, an inverse)",
+    "fix": "three flat grounds at most (the base, one surface, one inverse): lay the other bands on one of them",
+    "widths": [
+     390
+    ],
+    "from": "consistency"
+   },
+   {
+    "check": "copy-two-fragment",
+    "msg": "two-fragment headings \"X. Y.\": 2, budget 1",
+    "fix": "spend it once where it lands hardest; give the other headings a plain label, a claim or the thing they name (references/copy-tells.md)",
+    "widths": [],
+    "from": "copy",
+    "where": "copy x2: \"Your WhatsApp. One co...\", \"Prepare once. Persona...\"",
+    "exact": false
+   },
+   {
+    "check": "copy-cast",
+    "msg": "default-cast names: Priya",
+    "fix": "person names come only from the brief; a mock's names fit its locale and are not the names every model picks (references/copy-tells.md)",
+    "widths": [],
+    "from": "copy",
+    "where": "copy x1: \"Priya\"",
+    "exact": false
+   }
+  ],
+  "crashed": [],
+  "seconds": {
+   "consistency": 156,
+   "layout": 6
+  }
+ },
+ "open": [
+  {
+   "check": "screen-height",
+   "where": "#faq section.section \"Questions, answered.What teams a\"",
+   "msg": "1746px, 2.07 screens; a section is exactly one or two (--h), or on a phone at least one that its content fills",
+   "fix": "make the section exactly one or two screens (--h: 1 or 2)",
+   "widths": [
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "screen-height"
+   ],
+   "wheres": [
+    "#faq section.section \"Questions, answered.What teams a\""
+   ]
+  }
+ ],
+ "waived": [
+  {
+   "check": "copy-headings",
+   "where": "h2#workspace-h \"More than messages. A connected way to w\"",
+   "msg": "\"More than messages. A connected way to work.\" names no product, part, place or section (8 headings like it; at most one brand line per page) (and 7 more like it: \"We connect. We convert.\", \"Different industries. Th\", \"A clear path to your fir\", \"Set up your workspace.\", ...)",
+   "fix": "name the thing in every heading: the product, a part, the place or a section noun",
+   "widths": [
+    1440
+   ],
+   "from": "consistency",
+   "ids": [
+    "copy-headings"
+   ],
+   "wheres": [
+    "h2#workspace-h \"More than messages. A connected way to w\""
+   ],
+   "reason": "the section headings are the client's approved copy, kept verbatim from the brief (src/content/site.ts); the client asked for no rewording"
+  },
+  {
+   "check": "cut-text",
+   "where": "div.dg-nodes > div.dg-node.dg-node--tile:nth-of-type(1) > span.dg-cap > span.dg-cap__l \"WhatsApp\"",
+   "msg": "runs past the edge of its box div.panel.cv-diagram > div.dg > div.dg-nodes > div.dg-node.dg-node--tile:nth-of-type(1) (and 3 more like it: \"Inbox\", \"Campaign\", \"Workflow\")",
+   "fix": "give the text room: no overflow clipping a line, no line past its box",
+   "widths": [
+    390
+   ],
+   "from": "consistency",
+   "ids": [
+    "cut-text"
+   ],
+   "wheres": [
+    "div.dg-nodes > div.dg-node.dg-node--tile:nth-of-type(1) > span.dg-cap > span.dg-cap__l \"WhatsApp\""
+   ],
+   "reason": "the kit's diagram.js lays the lanes diagram out as icon tiles at 342px with each caption placed under its tile by design; the phone shot shows every caption whole on the ground"
+  }
+ ],
+ "warnCount": 36,
+ "at": "2026-11-14T15:56:52.842Z",
+ "openTold": true
+}

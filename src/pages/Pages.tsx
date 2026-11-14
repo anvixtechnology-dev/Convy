@@ -3,15 +3,16 @@ import { Link } from "react-router-dom";
 import {
   BenefitsSection,
   FAQSection,
-  FinalCtaSection,
   GettingStartedSection,
   HeroSection,
   IndustriesSection,
   JourneysSection,
+  ModuleChapters,
   PricingSection,
   ProcessSection,
   SecuritySection,
-  WorkspaceSection,
+  StatementSection,
+  WorkspaceTour,
 } from "../sections/HomeSections";
 import {
   PlatformAI,
@@ -27,7 +28,6 @@ import {
   PlatformWorkspace,
 } from "../sections/PlatformSections";
 import { SITE } from "../config/links";
-import { Eyebrow } from "../components/ui/primitives";
 
 function useTitle(title: string) {
   useEffect(() => {
@@ -36,39 +36,41 @@ function useTitle(title: string) {
 }
 
 export function HomePage() {
-  useTitle("CONVY — Your WhatsApp. One connected team.");
+  useTitle("CONVY: a shared WhatsApp inbox for business teams");
   return (
     <>
       <HeroSection />
       <BenefitsSection />
       <ProcessSection />
-      <WorkspaceSection />
-      <JourneysSection />
+      <WorkspaceTour />
+      <StatementSection />
       <IndustriesSection />
-      <GettingStartedSection />
       <SecuritySection />
       <PricingSection />
+      <GettingStartedSection />
       <FAQSection />
-      <FinalCtaSection />
     </>
   );
 }
 
 export function ProductPage() {
-  useTitle("Product — CONVY");
+  useTitle("Product: the CONVY workspace for WhatsApp teams");
   return (
     <>
-      <WorkspaceSection headingLevel="h1" variant="showcase" />
-      <JourneysSection compact />
-      <FinalCtaSection />
+      <ModuleChapters />
+      <JourneysSection />
     </>
   );
 }
 
+/**
+ * The Platform page keeps its own Tailwind sections for now. The wrapper keeps them out of the
+ * kit's one-section-per-screen box (main > section), which they were not built for.
+ */
 export function PlatformPage() {
-  useTitle("Platform — CONVY");
+  useTitle("Platform: CONVY for connected customer operations");
   return (
-    <>
+    <div className="legacy-page">
       <PlatformHero />
       <PlatformIntro />
       <PlatformProcess />
@@ -80,48 +82,42 @@ export function PlatformPage() {
       <PlatformFoundations />
       <PlatformGettingStarted />
       <PlatformCta />
-    </>
+    </div>
   );
 }
 
 export function SolutionsPage() {
-  useTitle("Solutions — CONVY");
+  useTitle("Solutions: CONVY for real estate, retail, services, education and agencies");
   return (
     <>
       <IndustriesSection headingLevel="h1" />
       <GettingStartedSection />
-      <FinalCtaSection />
     </>
   );
 }
 
 export function SecurityPage() {
-  useTitle("Security — CONVY");
-  return (
-    <>
-      <SecuritySection headingLevel="h1" />
-      <FinalCtaSection />
-    </>
-  );
+  useTitle("Security: how CONVY controls your customer workspace");
+  return <SecuritySection headingLevel="h1" />;
 }
 
 export function PricingPage() {
-  useTitle("Pricing — CONVY");
+  useTitle("Pricing: CONVY plans per tenant");
   return (
     <>
       <PricingSection headingLevel="h1" />
       <FAQSection />
-      <FinalCtaSection />
     </>
   );
 }
 
 export function FAQPage() {
-  useTitle("FAQ — CONVY");
+  useTitle("FAQ: questions about CONVY");
   return (
     <>
-      <FAQSection headingLevel="h1" />
-      <FinalCtaSection />
+      <FAQSection headingLevel="h1" count={4} />
+      <FAQSection from={4} count={4} id="faq-more" />
+      <FAQSection from={8} count={4} id="faq-last" />
     </>
   );
 }
@@ -131,34 +127,38 @@ export function FAQPage() {
  * supplied. No policy wording is invented here; replace with the approved documents.
  */
 export function LegalPage({ title }: { title: "Privacy" | "Terms" }) {
-  useTitle(`${title} — CONVY`);
+  useTitle(`${title}: CONVY`);
   return (
-    <section className="py-28 lg:py-36">
-      <div className="container-page max-w-[760px]">
-        <Eyebrow>LEGAL</Eyebrow>
-        <h1 className="text-[2.5rem] font-medium tracking-[-0.03em] text-fg">{title}</h1>
-        <p className="mt-6 text-lg leading-relaxed text-muted">
-          This document is not yet published on the website. For questions, contact{" "}
-          <a href={`mailto:${SITE.email}`} className="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent">
-            {SITE.email}
-          </a>
-          .
-        </p>
+    <section className="section" aria-labelledby="legal-h">
+      <div className="wrap">
+        <div className="section-head measure">
+          <h1 id="legal-h">{title}</h1>
+          <p>
+            This document is not yet published on the website. For questions, contact{" "}
+            <a className="link" href={`mailto:${SITE.email}`}>
+              {SITE.email}
+            </a>
+            .
+          </p>
+        </div>
       </div>
     </section>
   );
 }
 
 export function NotFoundPage() {
-  useTitle("Page not found — CONVY");
+  useTitle("Page not found: CONVY");
   return (
-    <section className="py-32">
-      <div className="container-page text-center">
-        <Eyebrow className="justify-center">404</Eyebrow>
-        <h1 className="text-[2.5rem] font-medium tracking-[-0.03em] text-fg">Page not found</h1>
-        <Link to="/" className="mt-8 inline-block text-accent hover:underline">
-          Back to home
-        </Link>
+    <section className="section" aria-labelledby="nf-h">
+      <div className="wrap">
+        <div className="section-head">
+          <h1 id="nf-h">Page not found</h1>
+          <p>
+            <Link className="link" to="/">
+              Back to the home page
+            </Link>
+          </p>
+        </div>
       </div>
     </section>
   );

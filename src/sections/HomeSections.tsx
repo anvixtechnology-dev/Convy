@@ -1,555 +1,643 @@
-import { Fragment, useEffect, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import {
-  Fingerprint,
-  GitBranch,
-  History,
-  Inbox,
-  KeyRound,
-  Link2,
-  Megaphone,
-  ShieldCheck,
-  Eye,
-  UsersRound,
-} from "lucide-react";
-import {
-  benefits,
-  features,
-  finalCta,
-  gettingStarted,
-  hero,
-  industries,
-  journeys,
-  process,
-  security,
-  workspace,
-  type Feature,
-} from "../content/site";
+/**
+ * Home sections, built to the taste-skill kit (design-taste-frontend 2.5.1).
+ *
+ * type: software (site-kind software)
+ * deal: hero centred, nav nav-mega, close close-word, footer footer-dark, rhythm dark-band,
+ *       buttons arrow, mark dots, palette the brand's own (brief Part 2: #141521 ground, teal #32bfa5),
+ *       type instrument (Instrument Sans), moment letters-assemble (the statement section)
+ * The page is a stack of screens: the hero alone on the first, every other section one or two.
+ *
+ * Copy comes from src/content and is the brief's; the kit's classes and tokens carry the look.
+ */
+import { useState, type ReactNode } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+import { EASE, Magnetic, Words } from "../fx/motion";
+import { GeoFieldLazy, Particles } from "../fx/Ambient";
+import { HeroScene } from "../fx/HeroScene";
+import { ProductStage, SplitStage } from "../fx/ProductScenes";
+import { hero, benefits, process, workspace, features, industries, gettingStarted, security, journeys } from "../content/site";
+const siteJourneys = { journeys };
 import { pricing } from "../content/pricing";
 import { faq } from "../content/faq";
-import { moduleAnchor } from "../content/types";
+import { moduleAnchor, type ModuleKey } from "../content/types";
 import { LINKS } from "../config/links";
+import { SmartLink } from "../components/ui/primitives";
 import {
-  Button,
-  Eyebrow,
-  PreviewCaption,
-  Reveal,
-  SectionHeading,
-  SmartLink,
-  TextLink,
-  cx, MaskReveal, ReadTicks, stagger } from "../components/ui/primitives";
-import { DashboardPreview } from "../components/DashboardPreview";
-import { FeatureColumn, FeatureListRow, FeatureRow } from "../components/FeatureCard";
-import { ProcessTimeline } from "../components/ProcessTimeline";
-import { IndustryCard } from "../components/IndustryCard";
-import { PricingCard } from "../components/PricingCard";
-import { FAQAccordion } from "../components/FAQAccordion";
-import { AISummaryMini, CampaignMini, InboxMini, TemplateMini, UsersMini, WorkflowMini } from "../components/MiniPreviews";
+  aiSummary,
+  auditLog,
+  campaignChecklist,
+  campaignStat,
+  enquiryChat,
+  inboxWindow,
+  ownershipNotify,
+  roleToggles,
+  setupApps,
+  templateDoc,
+} from "../kit/fragments";
 
-const ease = [0.22, 1, 0.36, 1] as const;
-/** Load-time fade-and-rise used for the hero copy. */
-const rise = (delay: number, y = 14) => ({
-  initial: { opacity: 0, y },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.7, delay, ease },
-});
-const openConvyIcon = LINKS.openConvyIsExternal ? "external" : "arrow";
+type H = "h1" | "h2";
 
-/* ================================================================== */
-/* 01 HERO                                                            */
-/* ================================================================== */
-/** Splits a line into words that each rise out of their own mask. */
-function RisingWords({ text, delay, className }: { text: string; delay: number; className?: string }) {
+/** A kit fragment pasted as markup into its slot (the slot div keeps the kit's placing classes). */
+export function Frag({ html, className, style, loop }: { html: string; className: string; style?: React.CSSProperties; loop?: boolean }) {
+  return <div className={className} style={style} data-ui-loop={loop ? "" : undefined} dangerouslySetInnerHTML={{ __html: html }} />;
+}
+
+/** A diagram card: the spec as JSON in a script inside the element (diagrams.md). */
+export function Diagram({ spec, still }: { spec: object; still?: boolean }) {
+  return <div className="dg" data-diagram="" data-dg-still={still ? "" : undefined} dangerouslySetInnerHTML={{ __html: `<script type="application/json">${JSON.stringify(spec)}</script>` }} />;
+}
+
+export const Arrow = () => (
+  <svg className="m-arrow" viewBox="0 0 12 12" aria-hidden="true">
+    <path className="m-arrow__stem" d="M1 6h8" />
+    <path className="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5" />
+  </svg>
+);
+
+function Heading({ as: Tag = "h2", id, lead, muted }: { as?: H; id: string; lead: ReactNode; muted?: ReactNode }) {
   return (
-    <span className="block">
-      {text.split(" ").map((w, i, all) => (
-        <Fragment key={i}>
-          <span className="inline-block overflow-hidden pb-[0.1em] align-bottom">
-            <motion.span
-              className={cx("inline-block", className)}
-              initial={{ y: "110%", opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: delay + i * 0.07, ease }}
-            >
-              {w}
-            </motion.span>
-          </span>
-          {/* real space between masked words (kept outside the clip) */}
-          {i < all.length - 1 && " "}
-        </Fragment>
-      ))}
-    </span>
+    <Tag id={id}>
+      {lead}
+      {muted && (
+        <>
+          {" "}
+          <span className="muted">{muted}</span>
+        </>
+      )}
+    </Tag>
   );
 }
 
+/* ================================================================== 1 Hero (centred) */
 export function HeroSection() {
-  const reduce = useReducedMotion();
   return (
-    <section aria-labelledby="hero-title" className="relative overflow-hidden">
-      {/* soft radial lighting behind the product preview */}
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute right-[-10%] top-[-20%] h-[760px] w-[900px] rounded-full bg-[radial-gradient(closest-side,rgb(50_191_165/0.16),rgb(50_191_165/0.05)_55%,transparent)]"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.6, delay: 0.2 }}
-      />
-      <div className="container-page relative grid gap-14 pb-20 pt-14 sm:pt-20 lg:grid-cols-[minmax(0,480px)_minmax(0,1fr)] lg:gap-14 lg:pb-28 lg:pt-24">
-        <div className="lg:pt-4">
-          <motion.div {...rise(0)}>
-            <Eyebrow>{hero.eyebrow}</Eyebrow>
-          </motion.div>
-          <h1 id="hero-title" className="text-[2.75rem] font-medium leading-[1.04] tracking-[-0.035em] text-fg sm:text-[3.5rem] lg:text-hero">
-            <RisingWords text={hero.titleLine1} delay={0.1} />
-            <RisingWords text={hero.titleLine2} delay={0.28} className="text-shimmer" />
-          </h1>
-          <motion.p {...rise(0.4)} className="mt-7 text-lg leading-relaxed text-muted">{hero.description}</motion.p>
-          <motion.div {...rise(0.5)} className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Button href={LINKS.openConvy} icon={openConvyIcon} className="h-12 px-6">
-              {hero.primaryCta}
-            </Button>
-            <Button href="/platform" variant="secondary" className="h-12 px-6">
-              {hero.secondaryCta}
-            </Button>
-          </motion.div>
-          <ul className="mt-10 space-y-3 border-t border-line pt-6">
-            {hero.highlights.map((h, i) => (
-              <motion.li key={h} {...rise(0.62 + i * 0.08, 8)} className="flex items-start gap-3 text-[14px] text-fg/90">
-                <ReadTicks />
-                {h}
-              </motion.li>
-            ))}
-          </ul>
-          <motion.p {...rise(0.9, 8)} className="mt-7 text-[14px] text-subtle">
-            {hero.demoPrompt}{" "}
-            <SmartLink href={LINKS.bookDemo} className="font-medium text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent">
-              {hero.demoLink}
-            </SmartLink>
-          </motion.p>
+    <section className="hero hero--centred fx-hero" aria-labelledby="hero-h">
+      <div className="fx-hero__light" aria-hidden="true" />
+      <GeoFieldLazy />
+      <div className="wrap">
+        <div className="hero-text">
+          <div className="hero__c">
+            <motion.span initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: EASE }}>
+              <SmartLink className="pill fx-pill-glow" href="/pricing">
+                <span>{hero.highlights[0]}</span>
+                <span className="muted">Plans from ₹1,999 a month</span>
+              </SmartLink>
+            </motion.span>
+            <h1 id="hero-h" aria-label={`${hero.titleLine1} ${hero.titleLine2}`}>
+              <Words text={hero.titleLine1} delay={0.1} />{" "}
+              <Words text={hero.titleLine2} delay={0.3} className="fx-words--accent" />
+            </h1>
+            {/* the brief's lead, first two sentences; its last clause carries the statement section below */}
+            <motion.p
+              className="hero__lead"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: EASE, delay: 0.55 }}
+            >
+              Turn WhatsApp enquiries into coordinated customer work. Bring your inbox, team, templates, and campaigns together.
+            </motion.p>
+            <motion.div
+              className="btn-row"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: EASE, delay: 0.7 }}
+            >
+              <Magnetic>
+                <SmartLink className="btn btn--primary fx-btn-3d" href={LINKS.openConvy}>
+                  {hero.primaryCta}
+                  <Arrow />
+                </SmartLink>
+              </Magnetic>
+              <Magnetic strength={0.2}>
+                <SmartLink className="btn btn--secondary fx-btn-3d" href={LINKS.bookDemo}>
+                  Book a demo
+                </SmartLink>
+              </Magnetic>
+            </motion.div>
+          </div>
+          <div className="hero__window cv-hero-ground fx-hero__window" role="img" aria-label="The CONVY workspace: a customer asks about a site visit in the shared inbox, with a campaign, a template, an AI summary and a workflow around it">
+            <Particles />
+            <HeroScene>
+            <div className="ui cv-win" aria-hidden="true">
+              <div className="cv-win__bar">
+                <span className="cv-win__dots"><i /><i /><i /></span>
+                <span><b>Priya Nair</b> · Site visit enquiry</span>
+                <span className="sp" />
+                <span>WhatsApp · Sales</span>
+              </div>
+              <div className="cv-win__body">
+                <div className="cv-inbox">
+                  <div className="q">Search conversations</div>
+                  <div className="t is-on"><i style={{ background: "#8fe0cd" }}>PN</i><b>Priya Nair</b><time>10:42</time><span>Is the 3BHK in Baner still available?</span></div>
+                  <div className="t"><i style={{ background: "#f3c98b" }}>RK</i><b>Rahul Kulkarni</b><time>10:31</time><span>Can you send the brochure again?</span></div>
+                  <div className="t"><i style={{ background: "#a9c4f0" }}>FS</i><b>Fatima Shaikh</b><time>10:12</time><span>Resolved · order 2219 delivered</span></div>
+                </div>
+                <div className="cv-convo">
+                  <div className="cv-chat" data-ly-steps="900">
+                    <div className="cv-msg cv-msg--in">Is the 3BHK in Baner still available? Can we visit on Saturday?<small>10:42</small></div>
+                    <div className="cv-tool" data-step>AI summary: wants a Saturday site visit, 3BHK in Baner</div>
+                    <div className="cv-msg cv-msg--out" data-step>Hi Priya, yes, it is available. I have noted Saturday at 11:00 for your visit, and Arjun will meet you at the site.<small>Meera · Sales</small></div>
+                    <div className="cv-acts" data-step><span>Send</span><span>Add note</span><span>Assign</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </HeroScene>
+          </div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.98 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1, delay: 0.3, ease }}
-          className="min-w-0 origin-top-left"
-        >
-          {/* very slow float — a few pixels, paused for reduced motion */}
-          <motion.div
-            animate={reduce ? undefined : { y: [0, -6, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
-          >
-            <DashboardPreview className="lg:w-[820px] lg:max-w-none" />
-          </motion.div>
-          <PreviewCaption>{hero.previewLabel}</PreviewCaption>
-        </motion.div>
       </div>
     </section>
   );
 }
 
-/* ================================================================== */
-/* 02 BENEFITS                                                        */
-/* ================================================================== */
-const benefitIcons = [Inbox, UsersRound, Megaphone];
-
+/* ================================================================== 2 Benefits: three cards, a fragment each */
 export function BenefitsSection() {
+  const panels = [
+    <Frag key="w" className="stage stage--fade-br" html={`<div class="at-corner wide" style="--w:620px;--ax:24px;--ay:24px">${inboxWindow}</div>`} />,
+    <Frag key="n" className="stage stage--fade-b" html={`<div class="at-rise fit" style="--fit-max:360px;--ax:max(20px, 50% - 180px);--ay:32px;--ay-sm:20px">${ownershipNotify}</div>`} loop />,
+    <Frag key="c" className="stage stage--fade-b" html={`<div class="at-rise fit" style="--fit-max:360px;--ax:max(20px, 50% - 180px);--ay:32px;--ay-sm:20px">${campaignChecklist}</div>`} />,
+  ];
   return (
-    <section aria-labelledby="benefits-title" className="py-24 lg:py-32">
-      <div className="container-page">
-        <SectionHeading id="benefits-title" eyebrow={benefits.eyebrow} title={benefits.titleLine1} titleAccent={benefits.titleLine2} className="mb-16" />
-        <ul className="grid border-t border-line md:grid-cols-3">
-          {benefits.items.map((b, i) => {
-            const I = benefitIcons[i];
-            return (
-              <Reveal
-                as="li"
-                key={b.title}
-                delay={i * 0.08}
-                className={cx("border-b border-line py-9 md:border-b-0 md:py-10", i > 0 && "md:border-l md:pl-10", i < 2 && "md:pr-10")}
-              >
-                <I className="size-[18px] text-muted" strokeWidth={1.5} aria-hidden />
-                <h3 className="mt-7 text-[1.25rem] font-medium tracking-[-0.015em] text-fg">{b.title}</h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-muted">{b.body}</p>
-              </Reveal>
-            );
-          })}
-        </ul>
+    <section className="section" id="benefits" aria-labelledby="benefits-h">
+      <div className="wrap">
+        <div className="section-head" data-reveal="">
+          <Heading id="benefits-h" lead={benefits.titleLine1} muted={benefits.titleLine2} />
+        </div>
+        <div className="grid cv-cards">
+          {benefits.items.map((b, i) => (
+            <article className="card card--row span-4 fx-card3d" data-reveal="" style={{ ["--d" as string]: `${i * 0.1}s` }} key={b.title}>
+              <h3>{b.title}</h3>
+              <p>{b.body}</p>
+              <div className="panel panel--flush">{panels[i]}</div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
-/* ================================================================== */
-/* 03 PROCESS                                                         */
-/* ================================================================== */
-const processIcons = [Link2, UsersRound, GitBranch, Eye];
+/* ================================================================== 3 Process: split, a lanes diagram */
+const lanesSpec = {
+  layout: "lanes",
+  alt: "WhatsApp messages and campaigns come into CONVY, which carries them to the shared inbox, a campaign and a workflow.",
+  input: { label: "WhatsApp", icon: "whatsapp" },
+  core: { label: "CONVY", icon: "ui:message-square", tone: "accent" },
+  lanes: [
+    { label: "Inbox", icon: "ui:inbox", done: true, sub: "Assigned" },
+    { label: "Campaign", icon: "ui:megaphone", done: true, sub: "Approved" },
+    { label: "Workflow", icon: "ui:workflow", done: true, sub: "CRM" },
+  ],
+};
 
 export function ProcessSection() {
   return (
-    <section aria-labelledby="process-title" className="bg-band py-24 lg:py-32">
-      <div className="container-page">
-        <SectionHeading id="process-title" eyebrow={process.eyebrow} title={process.title} description={process.description} className="mb-16" />
-        <ProcessTimeline steps={process.steps.map((s, i) => ({ ...s, icon: processIcons[i] }))} />
+    <section className="section g2m" id="process" aria-labelledby="process-h">
+      <div className="wrap grid">
+          <div className="span-6 stack-6">
+            <div className="section-head" data-reveal="">
+              <h2 id="process-h">{process.title}</h2>
+              <p>{process.description}</p>
+            </div>
+            <ul className="rows cv-rows">
+              {process.steps.map((s) => (
+                <li key={s.name}>
+                  <span className="rows__name">{s.name}</span>
+                  <p>{s.body}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <SplitStage className="span-6 start-7 fill">
+            <div className="frame frame--split frame--lit cv-diagram-frame cv-g2m-frame">
+              <div className="panel cv-diagram">
+                <Diagram spec={lanesSpec} still />
+              </div>
+            </div>
+          </SplitStage>
       </div>
     </section>
   );
 }
 
-/* ================================================================== */
-/* 04 PRODUCT WORKSPACE                                               */
-/* variant "overview" (Home): open divided rows, no previews          */
-/* variant "showcase" (Product): alternating content + preview rows   */
-/* ================================================================== */
-const byKey = Object.fromEntries(features.map((x) => [x.key, x])) as Record<Feature["key"], Feature>;
+/* ================================================================== 4 Workspace: tabs-tour on the dark band */
+const workflowSpec = {
+  layout: "timeline",
+  alt: "A workflow: an enquiry triggers it, a condition checks the service, a WhatsApp Flow collects the details, it waits for the response, then a CRM action runs.",
+  steps: [
+    { label: "Trigger", sub: "New enquiry", icon: "ui:zap" },
+    { label: "Condition", sub: "Service: AC repair", icon: "ui:git-branch" },
+    { label: "WhatsApp Flow", sub: "Collect details", icon: "whatsapp" },
+    { label: "Wait for response", sub: "Up to 24 h", icon: "ui:clock" },
+    { label: "CRM action", sub: "Create the lead", icon: "ui:send" },
+  ],
+};
 
-/** Highlights the module currently in view (IntersectionObserver, no scroll listeners). */
-function useActiveModule() {
-  const [active, setActive] = useState<string | null>(null);
-  useEffect(() => {
-    const els = features.map((x) => document.getElementById(moduleAnchor[x.key])).filter(Boolean) as HTMLElement[];
-    const io = new IntersectionObserver(
-      (entries) => {
-        const hit = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        if (hit) setActive(hit.target.id);
-      },
-      { rootMargin: "-35% 0px -55% 0px" },
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-  return active;
-}
+const tourKeys: ModuleKey[] = ["templates", "campaigns", "ai", "workflows"];
+const tourScreens: Record<string, ReactNode> = {
+  templates: <Frag className="stage stage--fade-br" html={`<div class="at-rise to-edge" style="--w:520px;--ax:max(24px, 50% - 260px);--ay:48px">${templateDoc}</div>`} />,
+  campaigns: <Frag className="stage stage--fade-b" html={`<div class="at-rise to-edge" style="--w:480px;--ax:max(24px, 50% - 240px);--ay:56px">${campaignStat}</div>`} />,
+  ai: <Frag className="stage stage--fade-b" html={`<div class="at-rise to-edge" style="--w:480px;--ax:max(24px, 50% - 240px);--ay:56px">${aiSummary}</div>`} />,
+  workflows: (
+    <div className="stage cv-stage-diagram">
+      <Diagram spec={workflowSpec} />
+    </div>
+  ),
+};
 
-function ModuleNav({ sticky = false }: { sticky?: boolean }) {
-  const active = useActiveModule();
+export function WorkspaceTour({ headingLevel = "h2" }: { headingLevel?: H }) {
+  const [on, setOn] = useState<ModuleKey>("templates");
+  const items = tourKeys.map((k) => features.find((f) => f.key === k)!);
   return (
-    <nav
-      aria-label="Product modules"
-      className={cx(sticky && "lg:sticky lg:top-[84px] lg:z-20 lg:-mx-8 lg:border-b lg:border-line lg:bg-page/80 lg:px-8 lg:py-3 lg:backdrop-blur-md")}
-    >
-      <ul className="flex flex-wrap gap-x-6 gap-y-2 text-[14px]">
-        {features.map((x) => {
-          const isActive = active === moduleAnchor[x.key];
-          return (
-            <li key={x.key} className="relative">
-              <a
-                href={`#${moduleAnchor[x.key]}`}
-                aria-current={isActive ? "location" : undefined}
-                className={cx("transition-colors", isActive ? "text-fg" : "text-muted hover:text-fg")}
-              >
-                <span className="mr-1.5 tabular-nums text-subtle">{x.number}</span>
-                {x.nav}
-              </a>
-              {isActive && (
-                <motion.span
-                  layoutId={sticky ? "module-indicator-sticky" : "module-indicator"}
-                  className="absolute -bottom-1 left-0 right-0 h-px bg-accent"
-                  transition={{ duration: 0.35, ease }}
-                />
-              )}
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
-  );
-}
-
-function AvailabilityNote() {
-  return <p className="mt-12 max-w-[820px] text-[14px] leading-relaxed text-subtle">{workspace.availabilityNote}</p>;
-}
-
-export function WorkspaceSection({
-  headingLevel = "h2",
-  variant = "overview",
-}: {
-  headingLevel?: "h1" | "h2";
-  variant?: "overview" | "showcase";
-}) {
-  return (
-    <section id="workspace" aria-labelledby="workspace-title" className="py-24 lg:py-32">
-      <div className="container-page">
-        <SectionHeading
-          as={headingLevel}
-          id="workspace-title"
-          eyebrow={workspace.eyebrow}
-          title={workspace.titleLine1}
-          titleAccent={workspace.titleLine2}
-          description={workspace.description}
-          className="mb-12"
-        />
-        <ModuleNav sticky={variant === "showcase"} />
-
-        {variant === "overview" ? (
-          <div className="mt-14 border-b border-line">
-            {features.map((x) => (
-              <FeatureListRow key={x.key} feature={x} />
+    <section className="section g2m ground-inverse" id="workspace" aria-labelledby="workspace-h">
+      <div className="wrap grid">
+          <div className="span-6 stack-6">
+            <div className="section-head" data-reveal="">
+              <Heading as={headingLevel} id="workspace-h" lead={workspace.titleLine1} muted={workspace.titleLine2} />
+              <p>{workspace.description}</p>
+            </div>
+            <div className="tabs" role="tablist" aria-label="Workspace modules">
+              {items.map((f) => (
+                <button
+                  key={f.key}
+                  type="button"
+                  className="tab"
+                  role="tab"
+                  id={`tab-${f.key}`}
+                  aria-selected={on === f.key}
+                  aria-controls={`tabpanel-${f.key} screen-${f.key}`}
+                  tabIndex={on === f.key ? 0 : -1}
+                  onClick={() => setOn(f.key)}
+                  onKeyDown={(e) => {
+                    const d = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
+                    if (!d) return;
+                    e.preventDefault();
+                    const next = items[(items.findIndex((x) => x.key === on) + d + items.length) % items.length];
+                    setOn(next.key);
+                    document.getElementById(`tab-${next.key}`)?.focus();
+                  }}
+                >
+                  {f.nav}
+                </button>
+              ))}
+            </div>
+            {items.map((f) => (
+              <div key={f.key} id={`tabpanel-${f.key}`} role="tabpanel" aria-labelledby={`tab-${f.key}`} hidden={on !== f.key} className="cv-tabpanel stack-4">
+                <h3>{f.title}</h3>
+                <p>{f.description}</p>
+                <SmartLink className="link" href={`/product#${moduleAnchor[f.key]}`}>
+                  See {f.nav.toLowerCase()}
+                </SmartLink>
+              </div>
             ))}
           </div>
-        ) : (
-          <>
-            <div className="mt-20 lg:mt-28">
-              <FeatureRow feature={byKey.inbox} preview={<InboxMini />} />
-              <FeatureRow feature={byKey.templates} preview={<TemplateMini />} reverse />
-              <FeatureRow feature={byKey.campaigns} preview={<CampaignMini />} />
-              <FeatureRow feature={byKey.users} preview={<UsersMini />} reverse />
-              <FeatureRow feature={byKey.ai} preview={<AISummaryMini detailed />} />
-              <FeatureRow feature={byKey.workflows} preview={<WorkflowMini />} reverse />
+          <SplitStage className="span-6 start-7 fill">
+            <div className="frame frame--split cv-tour-frame cv-g2m-frame">
+              {items.map((f) => (
+                <div key={f.key} id={`screen-${f.key}`} className="cv-screen" hidden={on !== f.key} role="img" aria-label={`${f.nav} in CONVY`}>
+                  {tourScreens[f.key]}
+                </div>
+              ))}
             </div>
-            <div className="grid gap-x-10 gap-y-12 pt-8 md:grid-cols-3">
-              <FeatureColumn feature={byKey.flows} />
-              <FeatureColumn feature={byKey.catalogs} />
-              <FeatureColumn feature={byKey.wallet} />
-            </div>
-            <PreviewCaption>Product previews are illustrative and use demo data.</PreviewCaption>
-          </>
-        )}
-
-        <AvailabilityNote />
+          </SplitStage>
       </div>
     </section>
   );
 }
 
-/* ================================================================== */
-/* 05 CUSTOMER JOURNEYS                                               */
-/* ================================================================== */
-const journeyPreview = {
-  templates: <TemplateMini />,
-  campaigns: <CampaignMini />,
-  ai: <AISummaryMini />,
-  workflows: <WorkflowMini />,
-} as const;
-
-function ProcessLine({ steps }: { steps: string[] }) {
+/* ================================================================== 5 The statement (letters-assemble) */
+export function StatementSection() {
   return (
-    <ol aria-label="Process" className="flex flex-wrap items-center gap-y-1 text-[14px]">
-      {steps.map((p, k) => (
-        <li key={p} className="flex items-center">
-          {k > 0 && <span aria-hidden className="mx-2.5 text-subtle">→</span>}
-          <span className="text-fg/90">{p}</span>
-        </li>
-      ))}
-    </ol>
-  );
-}
-
-/** compact = no previews (Product page, where previews already appear above). */
-export function JourneysSection({ compact = false }: { compact?: boolean }) {
-  return (
-    <section aria-labelledby="journeys-title" className="bg-band py-24 lg:py-32">
-      <div className="container-page">
-        <SectionHeading id="journeys-title" eyebrow={journeys.eyebrow} title={journeys.title} description={journeys.description} className="mb-16 lg:mb-20" />
-        <div className={cx(compact && "border-b border-line")}>
-          {journeys.items.map((j, i) =>
-            compact ? (
-              <Reveal as="article" key={j.number} className="grid gap-6 border-t border-line py-12 lg:grid-cols-12 lg:gap-8">
-                <div className="lg:col-span-5">
-                  <p className="text-[13px] text-subtle">
-                    <span className="tabular-nums">{j.number}</span> – {j.label}
-                  </p>
-                  <h3 className="mt-3 text-[1.5rem] font-medium leading-snug tracking-[-0.02em] text-fg">{j.title}</h3>
-                </div>
-                <div className="lg:col-span-6 lg:col-start-7">
-                  <p className="text-[15px] leading-relaxed text-muted">{j.body}</p>
-                  <div className="mt-6">
-                    <ProcessLine steps={j.process} />
-                  </div>
-                  <TextLink href={`/product#${moduleAnchor[j.key]}`} className="mt-6">
-                    {j.link}
-                  </TextLink>
-                </div>
-              </Reveal>
-            ) : (
-              <Reveal
-                as="article"
-                key={j.number}
-                className="grid gap-12 py-16 first:pt-0 last:pb-0 lg:grid-cols-12 lg:items-center lg:gap-8 lg:py-24"
-              >
-                <div className={cx("lg:col-span-5", i % 2 === 1 && "lg:order-2 lg:col-start-8")}>
-                  <p className="text-[13px] text-subtle">
-                    <span className="tabular-nums">{j.number}</span> – {j.label}
-                  </p>
-                  <h3 className="mt-4 text-[1.75rem] font-medium leading-[1.2] tracking-[-0.02em] text-fg">{j.title}</h3>
-                  <p className="mt-4 text-[15px] leading-relaxed text-muted">{j.body}</p>
-                  <div className="mt-7">
-                    <ProcessLine steps={j.process} />
-                  </div>
-                  <TextLink href={`/product#${moduleAnchor[j.key]}`} className="mt-7">
-                    {j.link}
-                  </TextLink>
-                </div>
-                <MaskReveal
-                  from={i % 2 === 1 ? "left" : "right"}
-                  className={cx("min-w-0 lg:col-span-7", i % 2 === 1 ? "lg:order-1 lg:col-start-1" : "lg:col-start-6 lg:pl-8")}
-                >
-                  {journeyPreview[j.key as keyof typeof journeyPreview]}
-                </MaskReveal>
-              </Reveal>
-            ),
-          )}
-        </div>
-        {!compact && <PreviewCaption>Product previews are illustrative and use demo data.</PreviewCaption>}
+    <section className="section" id="statement" data-moment="letters-assemble" aria-labelledby="statement-h">
+      <div className="wrap">
+        <h2 id="statement-h" className="mo-la__type">
+          We connect. We convert.
+        </h2>
+        <p className="mo-la__sub">Bring your inbox, team, templates, and campaigns together, with supported workflows and AI chat summaries when enabled.</p>
       </div>
     </section>
   );
 }
 
-/* ================================================================== */
-/* 06 INDUSTRIES — editorial grid, hairlines only                     */
-/* ================================================================== */
-export function IndustriesSection({ headingLevel = "h2" }: { headingLevel?: "h1" | "h2" }) {
+/* ================================================================== 6 Industries: rows beside a WhatsApp thread */
+export function IndustriesSection({ headingLevel = "h2" }: { headingLevel?: H }) {
   return (
-    <section id="industries" aria-labelledby="industries-title" className="py-24 lg:py-32">
-      <div className="container-page grid gap-14 lg:grid-cols-12 lg:gap-8">
-        <div className="lg:col-span-4">
-          <div className="lg:sticky lg:top-28">
-            <SectionHeading
-              as={headingLevel}
-              id="industries-title"
-              eyebrow={industries.eyebrow}
-              title={industries.titleLine1}
-              titleAccent={industries.titleLine2}
-              description={industries.description}
-            />
+    <section className="section g2m" id="industries" aria-labelledby="industries-h">
+      <div className="wrap grid">
+          <div className="span-6 stack-6">
+            <div className="section-head" data-reveal="">
+              <Heading as={headingLevel} id="industries-h" lead={industries.titleLine1} muted={industries.titleLine2} />
+              {headingLevel === "h1" && <p>{industries.description}</p>}
+            </div>
+            <ul className="rows cv-rows">
+              {industries.items.map((it) => (
+                <li key={it.id} id={it.id}>
+                  <span className="rows__name">{it.name}</span>
+                  <p>{it.body}</p>
+                </li>
+              ))}
+            </ul>
           </div>
+          <SplitStage className="span-6 start-7 fill cv-chat-stage">
+            <div className="frame frame--split frame--lit cv-chat-frame cv-g2m-frame" role="img" aria-label="A WhatsApp enquiry about a site visit, answered from the CONVY shared inbox">
+              <Frag className="stage stage--fade-b" html={`<div class="at-rise to-edge" style="--w:440px;--ax:max(24px, 50% - 220px);--ay:48px">${enquiryChat}</div>`} />
+            </div>
+          </SplitStage>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================== 7 Security: three cards */
+const hubSpec = {
+  layout: "hub",
+  alt: "CONVY connects to WhatsApp and Meta through the official Business API and Embedded Signup, with roles and an activity record.",
+  center: { label: "CONVY", icon: "ui:message-square", tone: "accent" },
+  spokes: [
+    { label: "WhatsApp", icon: "whatsapp" },
+    { label: "Meta", icon: "meta" },
+    { label: "Roles", icon: "ui:user-check" },
+    { label: "Activity", icon: "ui:history" },
+  ],
+};
+
+export function SecuritySection({ headingLevel = "h2" }: { headingLevel?: H }) {
+  const panels = [
+    <div key="d" className="cv-card-diagram">
+      <Diagram spec={hubSpec} />
+    </div>,
+    <Frag key="t" className="stage stage--fade-b" html={`<div class="at-rise fit" style="--fit-max:360px;--ax:max(20px, 50% - 180px);--ay:32px;--ay-sm:20px">${roleToggles}</div>`} />,
+    <Frag key="l" className="stage stage--fade-b" html={`<div class="at-rise fit" style="--fit-max:360px;--ax:max(20px, 50% - 180px);--ay:32px;--ay-sm:20px">${auditLog}</div>`} />,
+  ];
+  return (
+    <section className="section" id="security" aria-labelledby="security-h">
+      <div className="wrap">
+        <div className="section-head" data-reveal="">
+          <Heading as={headingLevel} id="security-h" lead={security.title} />
+          <p>{security.description}</p>
         </div>
-        <div className="grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:col-span-7 lg:col-start-6">
-          {industries.items.map((it, i) => (
-            <IndustryCard key={it.id} {...it} delay={stagger(i % 2, 0.08)} className={cx(i === 4 && "sm:col-span-2")} />
+        <div className="grid cv-cards">
+          {security.items.map((s, i) => (
+            <article className="card card--row span-4 fx-card3d" data-reveal="" style={{ ["--d" as string]: `${i * 0.1}s` }} key={s.name}>
+              <h3>{s.name}</h3>
+              <p>{s.body}</p>
+              <div className="panel panel--flush">{panels[i]}</div>
+            </article>
           ))}
         </div>
+        <p className="t-small muted cv-note">{security.note}</p>
       </div>
     </section>
   );
 }
 
-/* ================================================================== */
-/* 07 GETTING STARTED                                                 */
-/* ================================================================== */
+/* ================================================================== 8 Getting started: split, the setup */
 export function GettingStartedSection() {
   return (
-    <section id="get-started" aria-labelledby="start-title" className="bg-band py-24 lg:py-32">
-      <div className="container-page">
-        <SectionHeading id="start-title" eyebrow={gettingStarted.eyebrow} title={gettingStarted.title} className="mb-16" />
-        <ProcessTimeline variant="timeline" steps={gettingStarted.steps} />
+    <section className="section g2m" id="get-started" aria-labelledby="get-started-h">
+      <div className="wrap">
+        <div className="stack-6">
+          <div className="section-head--split" data-reveal="">
+            <h2 id="get-started-h">{gettingStarted.title}</h2>
+            <SmartLink className="link" href={LINKS.bookDemo}>
+              Book a demo
+            </SmartLink>
+          </div>
+          <ol className="grid cv-steps">
+            {gettingStarted.steps.map((s) => (
+              <li className="span-3" key={s.number}>
+                <span className="step-num">{Number(s.number)}</span>
+                <h3>{s.name}</h3>
+                <p>{s.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div className="frame frame--lit fill cv-setup-frame" data-reveal="" role="img" aria-label="Workspace setup in CONVY: WhatsApp connected, templates synced, the team invited and the first campaign ready">
+          <Frag className="stage stage--fade-b" html={`<div class="at-rise to-edge" style="--w:460px;--ax:max(24px, 50% - 230px);--ay:40px">${setupApps}</div>`} loop />
+        </div>
       </div>
     </section>
   );
 }
 
-/* ================================================================== */
-/* 08 SECURITY                                                        */
-/* ================================================================== */
-const securityIcons = [ShieldCheck, KeyRound, History];
+/* ================================================================== 9 Pricing: four plans */
+const sentence = (s: string) => s.charAt(0) + s.slice(1).toLowerCase();
 
-export function SecuritySection({ headingLevel = "h2" }: { headingLevel?: "h1" | "h2" }) {
+export function PricingSection({ headingLevel = "h2" }: { headingLevel?: H }) {
   return (
-    <section id="security" aria-labelledby="security-title" className="py-24 lg:py-32">
-      <div className="container-page grid gap-12 lg:grid-cols-12 lg:gap-8">
-        <div className="lg:col-span-5">
-          <SectionHeading as={headingLevel} id="security-title" eyebrow={security.eyebrow} title={security.title} description={security.description} />
-          <p className="mt-8 flex max-w-[440px] items-start gap-3 text-[14px] leading-relaxed text-subtle">
-            <Fingerprint className="mt-0.5 size-4 shrink-0" strokeWidth={1.5} aria-hidden />
-            {security.note}
-          </p>
+    <section className="section" id="pricing" aria-labelledby="pricing-h" style={headingLevel === "h1" ? ({ "--h": 2 } as React.CSSProperties) : undefined}>
+      <div className="wrap">
+        <div className="section-head" data-reveal="">
+          <Heading as={headingLevel} id="pricing-h" lead={pricing.title} muted={headingLevel === "h2" ? "Priced per tenant, per month." : undefined} />
+          {headingLevel === "h1" && <p>{pricing.description}</p>}
         </div>
-        <ul className="lg:col-span-6 lg:col-start-7">
-          {security.items.map((s, i) => {
-            const I = securityIcons[i];
+        <div className="grid cv-plans">
+          {pricing.plans.map((p) => {
+            const enterprise = p.id === "enterprise";
             return (
-              <Reveal as="li" key={s.name} delay={stagger(i, 0.08)} className="grid grid-cols-[28px_1fr] gap-x-4 border-t border-line py-8 last:border-b">
-                <I className="mt-1 size-[18px] text-muted" strokeWidth={1.5} aria-hidden />
-                <div>
-                  <h3 className="text-[1.125rem] font-medium text-fg">{s.name}</h3>
-                  <p className="mt-2 text-[15px] leading-relaxed text-muted">{s.body}</p>
-                </div>
-              </Reveal>
+              <article className="card card--plan span-3 fx-plan" data-reveal="" style={{ ["--d" as string]: `${pricing.plans.indexOf(p) * 0.08}s` }} key={p.id}>
+                <h3>{sentence(p.name)}</h3>
+                <p className="muted">{p.audience}</p>
+                <p className="price">
+                  <span className="t-stat">{p.price}</span>
+                  {p.unit && <span className="t-small muted">{p.unit.replace(/^\/ /, "per ").replace(/ \/ /g, " per ")}</span>}
+                </p>
+                <SmartLink className="btn btn--secondary" href={enterprise ? LINKS.bookDemo : LINKS.openConvy}>
+                  {enterprise ? "Book a demo" : "Open Convy"}
+                </SmartLink>
+                <ul className="checks">
+                  {p.items.map((it) => (
+                    <li key={it}>{it}</li>
+                  ))}
+                </ul>
+              </article>
             );
           })}
-        </ul>
+        </div>
+        {headingLevel === "h1" && (
+          <div className="stack-2 cv-note">
+            {pricing.notes.map((n) => (
+              <p className="t-small muted" key={n}>
+                {n}
+              </p>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
 }
 
-/* ================================================================== */
-/* 09 PRICING — cards kept: they genuinely aid comparison             */
-/* ================================================================== */
-export function PricingSection({ headingLevel = "h2" }: { headingLevel?: "h1" | "h2" }) {
+/* ================================================================== 10 FAQ: every answer open */
+export function FAQSection({ headingLevel = "h2", from = 0, count = 4, id = "faq" }: { headingLevel?: H; from?: number; count?: number; id?: string }) {
+  const all = from === 0 && count >= faq.items.length;
   return (
-    <section id="pricing" aria-labelledby="pricing-title" className="bg-band py-24 lg:py-32">
-      <div className="container-page">
-        <SectionHeading as={headingLevel} id="pricing-title" eyebrow={pricing.eyebrow} title={pricing.title} description={pricing.description} className="mb-16" />
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {pricing.plans.map((p, i) => (
-            <PricingCard
-              key={p.id}
-              {...p}
-              delay={stagger(i, 0.08)}
-              highlight={p.id === "growth"}
-              cta={
-                p.id === "enterprise"
-                  ? { label: "Book a demo", href: LINKS.bookDemo, variant: "secondary" }
-                  : { label: "Open Convy", href: LINKS.openConvy, variant: "primary", external: LINKS.openConvyIsExternal }
-              }
-            />
-          ))}
-        </div>
-        <div className="mt-12 grid gap-8 md:grid-cols-3">
-          {pricing.notes.map((n) => (
-            <p key={n} className="text-[14px] leading-relaxed text-subtle">
-              {n}
-            </p>
-          ))}
+    <section className="section" id={id} aria-labelledby={`${id}-h`}>
+      <div className="wrap">
+        <div className="grid">
+          <div className="span-6 stack-6">
+            <div className="section-head" data-reveal="">
+              <Heading as={headingLevel} id={`${id}-h`} lead={from === 0 ? faq.title : "More questions."} />
+              <p>{from === 0 ? "What teams ask before they start with Convy." : "Automation, AI, billing and setup."}</p>
+            </div>
+            <ul className="cv-works" aria-label="Works with">
+              <li><img src="/assets/icons/whatsapp.svg" alt="" width="32" height="32" /><span>WhatsApp Business API</span></li>
+              <li><img src="/assets/icons/meta.svg" alt="" width="32" height="22" /><span>Meta templates and Embedded Signup</span></li>
+              <li><img src="/assets/icons/xlsx.svg" alt="" width="32" height="32" /><span>CSV and Excel audiences</span></li>
+            </ul>
+            {!all && from === 0 && headingLevel === "h2" ? (
+              <SmartLink className="link" href="/faq">
+                See all {faq.items.length} questions
+              </SmartLink>
+            ) : (
+              <SmartLink className="link" href={LINKS.bookDemo}>
+                Book a demo
+              </SmartLink>
+            )}
+          </div>
+          <FaqList items={faq.items.slice(from, from + count)} id={id} />
         </div>
       </div>
     </section>
   );
 }
 
-/* ================================================================== */
-/* 10 FAQ                                                             */
-/* ================================================================== */
-export function FAQSection({ headingLevel = "h2" }: { headingLevel?: "h1" | "h2" }) {
+/** The questions as an accordion: one answer open at a time, the first open on load. */
+function FaqList({ items, id }: { items: Array<{ q: string; a: string }>; id: string }) {
+  const [open, setOpen] = useState<number | null>(0);
   return (
-    <section id="faq" aria-labelledby="faq-title" className="py-24 lg:py-32">
-      <div className="container-page grid gap-12 lg:grid-cols-12 lg:gap-8">
-        <div className="lg:col-span-4">
-          <SectionHeading as={headingLevel} id="faq-title" eyebrow={faq.eyebrow} title={faq.title} />
-        </div>
-        <div className="lg:col-span-8">
-          <FAQAccordion items={faq.items} />
-        </div>
-      </div>
-    </section>
+    <div className="faq fx-faq span-6 start-7" data-reveal="">
+      {items.map((it, i) => {
+        const on = open === i;
+        return (
+          <div className={`faq__item fx-faq__item${on ? " is-open" : ""}`} key={it.q}>
+            <h3>
+              <button
+                type="button"
+                className="fx-faq__q"
+                aria-expanded={on}
+                aria-controls={`${id}-a${i}`}
+                id={`${id}-q${i}`}
+                onClick={() => setOpen(on ? null : i)}
+              >
+                <span>{it.q}</span>
+                <motion.span className="fx-faq__chev" animate={{ rotate: on ? 180 : 0 }} transition={{ duration: 0.3, ease: EASE }} aria-hidden="true">
+                  <ChevronDown size={18} strokeWidth={2} />
+                </motion.span>
+              </button>
+            </h3>
+            <AnimatePresence initial={false}>
+              {on && (
+                <motion.div
+                  id={`${id}-a${i}`}
+                  role="region"
+                  aria-labelledby={`${id}-q${i}`}
+                  className="fx-faq__a"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.38, ease: EASE }}
+                >
+                  <p>{it.a}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        );
+      })}
+    </div>
   );
 }
 
-/* ================================================================== */
-/* 11 FINAL CTA — full-width band, no floating panel                  */
-/* ================================================================== */
+/* ================================================================== Product page pieces */
+/** The nine modules, one chapter screen each, with the anchors the nav and footer link to. */
+const moduleScreens: Partial<Record<ModuleKey, ReactNode>> = {
+  inbox: <Frag className="stage stage--fade-br" html={`<div class="at-corner to-edge" style="--ax:48px;--ay:48px">${inboxWindow}</div>`} />,
+  templates: tourScreens.templates,
+  campaigns: <Frag className="stage stage--fade-b" html={`<div class="at-rise to-edge" style="--w:440px;--ax:max(24px, 50% - 220px);--ay:48px">${campaignChecklist}</div>`} />,
+  users: <Frag className="stage stage--fade-b" html={`<div class="at-rise to-edge" style="--w:440px;--ax:max(24px, 50% - 220px);--ay:48px">${roleToggles}</div>`} />,
+  ai: tourScreens.ai,
+  flows: <Frag className="stage stage--fade-b" html={`<div class="at-rise to-edge" style="--w:440px;--ax:max(24px, 50% - 220px);--ay:48px">${enquiryChat}</div>`} />,
+  catalogs: <Frag className="stage stage--fade-b" html={`<div class="at-rise to-edge" style="--w:460px;--ax:max(24px, 50% - 230px);--ay:48px">${setupApps}</div>`} />,
+  wallet: tourScreens.campaigns,
+  workflows: tourScreens.workflows,
+};
+
+export function ModuleChapters() {
+  return (
+    <>
+      {features.map((f, i) => (
+        <section className="section" id={moduleAnchor[f.key]} key={f.key} aria-labelledby={`${f.key}-h`}>
+          <div className="wrap">
+            <div className="grid">
+              <div className="span-6 stack-6">
+                <div className="section-head" data-reveal="">
+                  {i === 0 ? (
+                    <h1 id={`${f.key}-h`}>
+                      {f.title}
+                    </h1>
+                  ) : (
+                    <h2 id={`${f.key}-h`}>{f.title}</h2>
+                  )}
+                  <p>
+                    {f.nav}
+                    {f.status ? `, ${sentence(f.status).replace("ai ·", "AI,")}` : ""}. {f.description}
+                  </p>
+                </div>
+                <ul className="checks">
+                  {f.features.map((x) => (
+                    <li key={x}>{x}</li>
+                  ))}
+                </ul>
+              </div>
+              <ProductStage
+                module={f.key}
+                className="span-6 start-7"
+                frameClass={`frame frame--split${f.key === "workflows" ? "" : " frame--lit"}`}
+                label={`${f.nav} in CONVY`}
+              >
+                {moduleScreens[f.key]}
+              </ProductStage>
+            </div>
+          </div>
+        </section>
+      ))}
+    </>
+  );
+}
+
+/** Kept for the pages that still import it: the close now lives in footer.closing on every page. */
 export function FinalCtaSection() {
+  return null;
+}
+
+/** The four customer journeys (Product page): two screens, two journeys a screen. */
+export function JourneysSection() {
+  const { journeys } = siteJourneys;
+  const rows = (list: typeof journeys.items) => (
+    <ul className="rows cv-journeys span-12">
+      {list.map((j) => (
+        <li key={j.key}>
+          <span className="rows__name">{j.title}</span>
+          <p>{j.body}</p>
+          <span className="rows__value">{j.process.join(" · ")}</span>
+          <SmartLink className="link" href={`/product#${moduleAnchor[j.key]}`}>
+            See {j.label.toLowerCase()}
+          </SmartLink>
+        </li>
+      ))}
+    </ul>
+  );
   return (
-    <section aria-labelledby="cta-title" className="border-t border-line bg-surface py-24 lg:py-32">
-      <div className="container-page grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-8">
-        <div className="lg:col-span-7">
-          <Eyebrow>{finalCta.eyebrow}</Eyebrow>
-          <h2 id="cta-title" className="text-[2rem] font-medium leading-[1.12] tracking-[-0.028em] text-fg sm:text-[2.5rem] lg:text-section">
-            {finalCta.title}
-          </h2>
-          <p className="mt-5 max-w-[560px] text-lg leading-relaxed text-muted">{finalCta.description}</p>
+    <section className="section" id="journeys" aria-labelledby="journeys-h" style={{ "--h": 2 } as React.CSSProperties}>
+      <div className="wrap">
+        <div className="section-head" data-reveal="">
+          <h2 id="journeys-h">{journeys.title}</h2>
+          <p>{journeys.description}</p>
         </div>
-        <div className="flex flex-col gap-3 sm:flex-row lg:col-span-5 lg:justify-end">
-          <Button href={LINKS.openConvy} icon={openConvyIcon} className="h-12 px-6">
-            {finalCta.primaryCta}
-          </Button>
-          <Button href={LINKS.bookDemo} variant="secondary" className="h-12 px-6">
-            {finalCta.secondaryCta}
-          </Button>
-        </div>
-        <p className="max-w-[640px] text-[15px] leading-relaxed text-subtle lg:col-span-7">{finalCta.support}</p>
+        <div className="grid">{rows(journeys.items)}</div>
       </div>
     </section>
   );

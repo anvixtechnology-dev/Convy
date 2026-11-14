@@ -116,7 +116,7 @@ export function PlatformIntro() {
 const stepIcons = [Link2, UsersRound, GitBranch, Eye];
 export function PlatformProcess() {
   return (
-    <section aria-labelledby="platform-process-title" className="bg-band py-24 lg:py-32">
+    <section aria-labelledby="platform-process-title" className="legacy-band py-24 lg:py-32">
       <div className="container-page">
         <SectionHeading id="platform-process-title" eyebrow={process.eyebrow} title={process.title} description={process.description} className="mb-16" />
         <ProcessTimeline steps={process.steps.map((s, i) => ({ number: s.number, name: s.name, tagline: s.tagline, body: s.body, icon: stepIcons[i] }))} />
@@ -187,7 +187,7 @@ export function PlatformTeams() {
 /* 06 Workflow automation */
 export function PlatformAutomation() {
   return (
-    <section aria-labelledby="platform-auto-title" className="bg-band py-24 lg:py-32">
+    <section aria-labelledby="platform-auto-title" className="legacy-band py-24 lg:py-32">
       <div className="container-page grid gap-14 lg:grid-cols-12 lg:items-center lg:gap-8">
         <div className="lg:col-span-5">
           <SectionHeading id="platform-auto-title" eyebrow={automation.eyebrow} title={automation.title} />
@@ -255,7 +255,7 @@ export function PlatformAI() {
 /* 08 Industries */
 export function PlatformIndustries() {
   return (
-    <section aria-labelledby="platform-ind-title" className="bg-band py-24 lg:py-32">
+    <section aria-labelledby="platform-ind-title" className="legacy-band py-24 lg:py-32">
       <div className="container-page">
         <SectionHeading id="platform-ind-title" eyebrow={industries.eyebrow} title={industries.title} description={industries.description} className="mb-16" />
         <div className="grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
@@ -302,7 +302,7 @@ export function PlatformFoundations() {
 /* 10 Getting started */
 export function PlatformGettingStarted() {
   return (
-    <section aria-labelledby="platform-start-title" className="bg-band py-24 lg:py-32">
+    <section aria-labelledby="platform-start-title" className="legacy-band py-24 lg:py-32">
       <div className="container-page">
         <SectionHeading id="platform-start-title" eyebrow={gettingStarted.eyebrow} title={gettingStarted.title} className="mb-16" />
         <ProcessTimeline variant="timeline" steps={gettingStarted.steps} />

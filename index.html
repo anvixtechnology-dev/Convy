@@ -1,24 +1,57 @@
 <!doctype html>
-<html lang="en">
+<!-- taste-skill (design-taste-frontend 2.5.1). Page type software, site-kind software.
+     data-buttons arrow and the dots mark were dealt; data-radius soft is the default for software. -->
+<html lang="en" data-type="software" data-radius="soft" data-buttons="arrow" data-motion>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Platform — CONVY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>CONVY: a shared WhatsApp inbox for business teams</title>
     <meta
       name="description"
-      content="Bring your WhatsApp conversations, team collaboration, customer outreach, and supported automation workflows together in one place."
+      content="Turn WhatsApp enquiries into coordinated customer work. Bring your inbox, team, templates, and campaigns together on the official WhatsApp Business API."
     />
-    <meta name="theme-color" content="#FFFFFF" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CONVY: a shared WhatsApp inbox for business teams" />
+    <meta property="og:description" content="Your WhatsApp inbox, templates, campaigns, and team in one workspace." />
+    <meta property="og:image" content="/share.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#141521" />
+    <!-- <link rel="canonical" href="https://[the client's domain]/"> : add once the domain is confirmed -->
+    <meta name="site-kind" content="software" />
+    <meta name="page-type" content="software" />
+
+    <!-- Layer order first: Tailwind's base sits under the kit, Tailwind's utilities over it. -->
+    <style>@layer theme, base, kit, components, utilities;</style>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/kit.css" />
+    <link rel="stylesheet" href="/assets/motion/motion.css" />
+    <!-- The brand's own colours (brief Part 2) through start.mjs brand; keep after the kit: layout.css resets --ly-scale -->
+    <style>
+      :root {
+        --p-bg: #141521; --p-surface: #191b2b; --p-ink: #f5f5fa; --p-muted: #b5b9cd;
+        --p-accent: #32bfa5; --p-accent-ink: #141521; --p-action: #32bfa5; --p-action-ink: #141521;
+        --p-inv-bg: #f5f5fa; --p-inv-surface: #e3e3e9; --p-inv-ink: #141521; --p-inv-muted: #5f606b;
+        --p-inv-accent: #141521; --p-inv-accent-ink: #f5f5fa; --p-inv-action: #141521; --p-inv-action-ink: #f5f5fa;
+        --font-display: "Instrument Sans", system-ui, sans-serif;
+        --font-text: "Instrument Sans", system-ui, sans-serif;
+        --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+        --display-weight: 500;
+        --display-tracking: -0.028em;
+        --display-tracking-xl: -0.036em;
+        --display-stretch: 96%;
+        --ly-scale: 1.04;
+      }
+    </style>
+    <!-- the hero's entrance and the moments' guard, before the first paint -->
+    <script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+    <script>document.documentElement.classList.add('mo-js');setTimeout(()=>document.documentElement.classList.add('mo-safe'),2500)</script>
+    <script src="/assets/backgrounds/backgrounds.js"></script>
   </head>
   <body>
-    <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -1,4 +1,12 @@
+/* Tailwind reads only the pages still built with it (the Platform page and its components).
+   The kit's class names (start-7, grid, span-6) would otherwise become Tailwind utilities. */
 @import "tailwindcss";
+@source not "./sections/HomeSections.tsx";
+@source not "./components/layout";
+@source not "./pages";
+@source not "./kit";
+@source not "../public";
+@source not "../.taste-skill";
 
 @theme {
   /* CONVY design system (source: brief Part 2) */
@@ -32,44 +40,33 @@
 }
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 5.5rem;
-    -webkit-text-size-adjust: 100%;
-    color-scheme: dark;
-  }
-  body {
-    @apply bg-page font-sans text-base text-fg antialiased;
-    font-feature-settings: "cv11", "ss01";
-    overflow-x: clip;
-  }
-  ::selection {
-    background: rgb(50 191 165 / 0.3);
-    color: #fff;
-  }
-  :focus-visible {
+  /* the kit (public/assets/kit.css) sets the page base; this keeps the legacy pages' focus ring */
+  .legacy-page :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 3px;
-    border-radius: 6px;
   }
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-  }
+}
+
+/* Kit class names that Tailwind markup also uses, reset for the legacy Platform page. In the
+   components layer: over the kit's layer, under Tailwind's utilities, so a page's own grid-cols-*,
+   gap-* or flex utility still decides. */
+@layer components {
+  :where(.legacy-page) .grid { grid-template-columns: none; column-gap: normal; row-gap: normal; }
+  :where(.legacy-page) .grid > * { grid-column: auto; }
+  :where(.legacy-page) .group { display: revert; flex-direction: revert; min-height: revert; }
 }
 
 @layer utilities {
   .container-page {
     @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8;
   }
-  .bg-dots {
+  .legacy-dots {
     background-image: radial-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px);
     background-size: 16px 16px;
   }
 
   /* Secondary-background sections fade in/out of the page colour instead of a hard edge */
-  .bg-band {
+  .legacy-band {
     background: linear-gradient(
       180deg,
       var(--color-page) 0%,
@@ -143,8 +140,8 @@
 }
 
 /* Ambient page atmosphere: soft teal light + fine grain, fixed behind content */
-.ambient::before,
-.ambient::after {
+.legacy-page .ambient::before,
+.legacy-page .ambient::after {
   content: "";
   position: fixed;
   inset: 0;

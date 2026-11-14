@@ -1,0 +1,25 @@
+/*
+  The taste-skill kit (design-taste-frontend 2.5.1), loaded as one cascade layer.
+
+  The kit's files are copied unchanged into public/assets. They load here inside
+  @layer kit so the Tailwind utilities used by pages not yet moved to the kit
+  (the Platform page) still win over the kit's base rules. index.html declares
+  the layer order (theme, base, kit, components, utilities) before anything loads.
+*/
+@import url("system.css") layer(kit);
+@import url("ui/cards.css") layer(kit);
+@import url("backgrounds/backgrounds.css") layer(kit);
+@import url("layout/layout.css") layer(kit);
+@import url("icons/icon.css") layer(kit);
+@import url("ui/base.css") layer(kit);
+@import url("ui/window/fragment.css") layer(kit);
+@import url("ui/notify/fragment.css") layer(kit);
+@import url("ui/files/fragment.css") layer(kit);
+@import url("ui/doc/fragment.css") layer(kit);
+@import url("ui/stat/fragment.css") layer(kit);
+@import url("ui/chat/fragment.css") layer(kit);
+@import url("ui/integrations/fragment.css") layer(kit);
+@import url("ui/toggles/fragment.css") layer(kit);
+@import url("ui/checklist/fragment.css") layer(kit);
+@import url("diagrams/diagram.css") layer(kit);
+@import url("moments/letters-assemble/moment.css") layer(kit);

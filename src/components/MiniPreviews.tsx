@@ -82,7 +82,7 @@ export function TemplateMini() {
             <RefreshCw className="size-3" /> Synced with Meta
           </div>
         </div>
-        <div className="bg-dots flex items-center justify-center bg-page/60 p-5">
+        <div className="legacy-dots flex items-center justify-center bg-page/60 p-5">
           <div className="w-full max-w-[220px] rounded-xl rounded-tl-sm border border-line bg-card p-3 leading-snug text-fg">
             Hi Priya, your order #4821 is on its way and should arrive by Friday.
             <div className="mt-1 text-right text-[10px] text-subtle">Preview</div>
@@ -226,7 +226,7 @@ const flowNodes: Array<{ icon: Icon; type: string; title: string; selected?: boo
 
 export function WorkflowMini() {
   return (
-    <PreviewFrame label="Illustrative workflow: Trigger, Condition, Flow, Wait for response, CRM action (demo data)." bodyClassName="bg-dots bg-page/60">
+    <PreviewFrame label="Illustrative workflow: Trigger, Condition, Flow, Wait for response, CRM action (demo data)." bodyClassName="legacy-dots bg-page/60">
       <div className="flex items-center gap-2 border-b border-line bg-card px-4 py-2.5 text-[12px]">
         <span className="font-medium text-fg">Service details</span>
         <Chip tone="outline">Draft · v2</Chip>

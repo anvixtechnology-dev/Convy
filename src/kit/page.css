@@ -1,0 +1,184 @@
+/*
+  Page CSS (taste-skill: only what sits inside a visual and the kit lacks, and one --p-h per card group).
+  Unlayered on purpose: it sits over the kit's layer.
+*/
+
+/* ------------------------------------------------ the lit ground behind UI: the brand's deep teal
+   (the kit's sand, sky and sage are light grounds; Convy's brief sets a dark page with a teal accent) */
+html {
+  --ground-bg: #bcd8d1; --ground-surface: #d0e5df; --ground-ink: #0f2d28; --ground-muted: #3b5d56; --ground-accent: #1d7f6c;
+}
+
+/* ------------------------------------------------ the hero window (the centred hero's one window) */
+/* the frame's lit ground: the brand's teal over the page ground, drawn once, no motion */
+.cv-hero-ground {
+  background:
+    radial-gradient(70% 90% at 50% 0%, rgb(50 191 165 / 0.34), transparent 70%),
+    radial-gradient(60% 70% at 85% 100%, rgb(32 201 107 / 0.16), transparent 70%),
+    linear-gradient(#1d2a33, #172028 60%, #141521);
+}
+.cv-win { background: #191b2b; color: #eceef5; border-radius: 12px; overflow: hidden; font: 400 14px/1.4 var(--font-text);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / .08), 0 30px 70px -30px rgb(0 0 0 / .8); text-align: left; }
+.cv-win__bar { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; border-bottom: 1px solid rgb(255 255 255 / .07); font-size: 13px; color: #a3a8bd; }
+.cv-win__bar b { color: #f5f5fa; font-weight: 500; }
+.cv-win__bar .sp { flex: 1; }
+.cv-win__dots { display: flex; gap: 6px; } .cv-win__dots i { width: 10px; height: 10px; border-radius: 50%; background: #3a3d55; }
+.cv-win__body { display: grid; grid-template-columns: 260px 1fr; min-height: 420px; }
+.cv-inbox { border-right: 1px solid rgb(255 255 255 / .07); padding: 10px; display: grid; align-content: start; gap: 2px; }
+.cv-inbox .q { height: 34px; margin-bottom: 6px; border-radius: 9px; background: rgb(255 255 255 / .06); display: flex; align-items: center; padding: 0 10px; color: #8c91a9; font-size: 13px; }
+.cv-inbox .t { display: grid; grid-template-columns: 30px 1fr auto; gap: 1px 10px; padding: 9px 8px; border-radius: 9px; font-size: 13px; }
+.cv-inbox .t.is-on { background: rgb(50 191 165 / .12); }
+.cv-inbox .t i { grid-row: 1 / span 2; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font: 600 13px/1 var(--font-text); font-style: normal; color: #141521; }
+.cv-inbox .t b { font-weight: 500; color: #f5f5fa; }
+.cv-inbox .t time { color: #8c91a9; font-size: 13px; }
+.cv-inbox .t span { grid-column: 2 / -1; color: #a3a8bd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cv-convo { display: grid; min-width: 0; align-content: start; background: #141521; }
+.cv-chat { display: grid; gap: 8px; align-content: start; padding: 14px 18px; font-size: 14px; }
+.cv-msg { max-width: 82%; padding: 10px 14px; border-radius: 16px; line-height: 1.45; }
+.cv-msg small { display: inline; margin-left: 8px; font-size: 13px; opacity: .65; white-space: nowrap; }
+.cv-msg--in { justify-self: start; background: #24263a; color: #f5f5fa; border-bottom-left-radius: 6px; }
+.cv-msg--out { justify-self: end; background: #1f4a42; color: #f5f5fa; border-bottom-right-radius: 6px; }
+.cv-tool { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #8fe0cd; }
+.cv-tool::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.cv-acts { display: flex; gap: 8px; justify-self: end; }
+.cv-acts span { height: 30px; padding: 0 12px; border-radius: 99px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 500; background: rgb(255 255 255 / .08); color: #eceef5; }
+.cv-acts span:first-child { background: #32bfa5; color: #141521; }
+@media (max-width: 1023px) { .cv-win__body { grid-template-columns: 1fr; } .cv-inbox { display: none; } }
+@media (max-width: 639px) { .cv-win__bar .sp ~ span { display: none; } .cv-msg { max-width: 92%; } }
+
+/* ------------------------------------------------ card groups: one --p-h each */
+#benefits .panel { --p-h: 300px; }
+#security .panel { --p-h: 270px; }
+#benefits .stage { --fade-h: 48px; }
+/* the process diagram's frame runs to the section's foot */
+@media (min-width: 1280px) { #process .cv-diagram-frame { --ratio: 111%; } }
+.cv-phone-only { display: none; }
+@media (max-width: 639px) {
+  #benefits .panel { --p-h: 290px; }
+  #security .panel { --p-h: 200px; }
+  .faq > .cv-phone-only { display: grid; }
+  .hero .pill .muted { display: none; }
+}
+#benefits .ui-win { width: 620px; }
+.cv-card-diagram, .cv-card-diagram > .dg { height: 100%; }
+
+/* splits: the frame holds a diagram or a fragment */
+.cv-diagram { height: 100%; background: transparent; border: 0; }
+.cv-diagram > .dg, .cv-stage-diagram > .dg { height: 100%; }
+.cv-stage-diagram { position: absolute; inset: 0; padding: var(--s-5); }
+
+/* tabs-tour: one fixed height, so the frame never resizes */
+.cv-tour-frame { position: relative; }
+.cv-screen { position: absolute; inset: 0; }
+.cv-screen > .stage { height: 100%; }
+.cv-tabpanel { min-height: 170px; }
+.cv-tabpanel h3 { font: 500 var(--t-card)/1.3 var(--font-text); }
+
+/* lists inside splits read at 16px, the name in 500 */
+.cv-rows > li { grid-template-columns: minmax(0, 1fr); }
+.cv-rows > li > p { color: var(--muted); }
+.cv-journeys > li { grid-template-columns: minmax(0, 1fr) auto; }
+.cv-journeys > li > .link { grid-column: 1; justify-self: start; }
+
+.cv-note { margin-top: var(--s-5); max-width: 72ch; }
+
+/* pricing: four plans, one row from 1024 */
+.cv-plans > .card { grid-column: 1 / -1; }
+@media (min-width: 640px) { .cv-plans > .card { grid-column: auto / span 6; } }
+@media (min-width: 1024px) { .cv-plans > .card { grid-column: auto / span 3; } }
+.cv-plans .checks { gap: var(--s-2); }
+.cv-plans > .card { gap: var(--s-3); }
+.cv-plans .checks li { font-size: var(--t-small); }
+.cv-plans .price { flex-wrap: wrap; }
+
+/* ------------------------------------------------ AI summary (page-drawn: no kit fragment shows it) */
+.cv-ai { padding: 0 0 16px; }
+.cv-ai .ui-head { padding: 12px 16px; border-bottom: 1px solid var(--u-line); }
+.cv-ai__text { margin: 14px 16px 0; font-size: 14px; line-height: 1.5; color: var(--u-ink); }
+.cv-ai__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 14px 16px 0; }
+.cv-ai__facts div { padding: 8px 10px; border-radius: 8px; background: var(--u-bg-2, rgb(0 0 0 / .04)); border: 1px solid var(--u-line); }
+.cv-ai__facts dt { font-size: 13px; color: var(--u-muted); }
+.cv-ai__facts dd { margin: 2px 0 0; font-size: 13px; font-weight: 500; color: var(--u-ink); }
+.cv-ai__acts { display: flex; gap: 8px; margin: 16px 16px 0; }
+.cv-ai__acts span { height: 30px; padding: 0 12px; border-radius: 99px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 500; border: 1px solid var(--u-line); color: var(--u-ink); }
+.cv-ai__acts span:last-child { background: #32bfa5; border-color: #32bfa5; color: #141521; }
+
+/* ------------------------------------------------ activity log */
+.cv-log .ui-head { padding: 12px 16px; border-bottom: 1px solid var(--u-line); }
+.cv-log ul { list-style: none; margin: 0; padding: 4px 16px 8px; }
+.cv-log li { display: flex; gap: 8px; padding: 9px 0; border-bottom: 1px solid var(--u-line); font-size: 13px; color: var(--u-muted); }
+.cv-log li b { font-weight: 500; color: var(--u-ink); }
+.cv-log time { margin-left: auto; font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------ the nav's menu card */
+.menu-card__panel { display: grid; place-items: center; }
+.menu-card__icon { width: 56px; height: 56px; }
+
+/* ------------------------------------------------ pages not yet on the kit */
+.legacy-page { display: block; }
+
+/* ------------------------------------------------ screens per width (layout-v4.md section 2):
+   stacked at the tablet and the phone, these sections need two screens there */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  #benefits, #security, #pricing { --h: 2; }
+  /* the rows take the row at this width, two up; the thread shows from 1280 and stacked below 1024 */
+  #industries .grid > .span-6:first-child { grid-column: 1 / -1; }
+  #industries .cv-rows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); }
+  #industries .cv-rows > li:first-child { padding-top: var(--s-4); }
+  #industries .cv-chat-frame { display: none; }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  #benefits, #security { --h: 2; }
+  #industries .cv-chat-frame { --ratio: 44%; }
+  .cv-plans .checks { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-4); }
+  .cv-tour-frame { --ratio: 56%; }
+}
+@media (max-width: 639px) {
+  #benefits, #security, #faq { --hm: 2; }
+  /* the splits as two phone screens (.g2m): the words, then the picture filling the second */
+  .cv-g2m-frame, .cv-setup-frame { --ratio: 0px; height: auto; }
+  #pricing { --hm: 2; }
+  /* four plans in two phone screens: price and button on one row, the lines two-up */
+  #pricing .card--plan > p.muted { display: none; }
+  /* the unit is in the heading on the home page ("Priced per tenant, per month.") */
+  #pricing .card--plan .price .t-small { display: none; }
+  #pricing .grid { row-gap: var(--s-3); }
+  #pricing .card--plan { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--s-3) var(--s-4); padding: var(--s-4) var(--s-5); }
+  #pricing .card--plan > h3, #pricing .card--plan > .checks { grid-column: 1 / -1; }
+  #pricing .card--plan > .btn { width: auto; }
+  #pricing .card--plan .checks { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2) var(--s-3); }
+  #pricing .card--plan .checks li { grid-template-columns: 16px 1fr; gap: var(--s-2); font-size: 13px; }
+  #pricing .card--plan .checks li::before { width: 16px; height: 16px; -webkit-mask-size: 16px; mask-size: 16px; }
+}
+/* the statement fills its screen on the tablet and the phone: the line set larger there */
+@media (min-width: 640px) and (max-width: 1023px) { #statement .mo-la__type { font-size: 17vw; } }
+@media (max-width: 639px) { #statement .mo-la__type { font-size: 21vw; } }
+
+/* a phone: the diagram frames give their padding to the diagram, so its labels keep their room */
+@media (max-width: 639px) { .cv-diagram-frame { padding: 0; } }
+
+/* the close's name: room above the capitals (the display face's ascent runs past a .86 line) */
+.close__word { line-height: 1; }
+
+/* getting started: four steps across, the setup in a wide lit frame under them */
+.cv-steps { list-style: none; margin: 0; padding: 0; }
+.cv-steps > li { display: grid; gap: var(--s-2); align-content: start; }
+.cv-steps h3 { font: 500 var(--t-card)/1.3 var(--font-text); }
+.cv-steps p { color: var(--muted); }
+.cv-setup-frame { --ratio: 0px; min-height: 240px; margin-top: var(--s-7); }
+@media (max-width: 1023px) { .cv-steps > li { grid-column: auto / span 6; } }
+@media (max-width: 639px) { .cv-steps { row-gap: var(--s-4); } .cv-steps .step-num { display: none; } .cv-steps > li { grid-column: 1 / -1; } .cv-setup-frame { margin-top: 0; } }
+
+/* FAQ: the real marks Convy works with */
+.cv-works { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-3); }
+.cv-works li { display: flex; align-items: center; gap: var(--s-3); color: var(--muted); }
+.cv-works img { width: 32px; height: 32px; object-fit: contain; flex: none; }
+/* a phone: the marks as one row, their names kept for screen readers */
+@media (max-width: 639px) {
+  .cv-works { display: flex; gap: var(--s-4); }
+  .cv-works li > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+
+/* a product window on a lit frame stays a dark window with light text: the kit takes its surface
+   from the page's (dark) card but its ink from the frame's (dark) ground ink */
+.frame--lit .ui { --fx-ink: #f5f5fa; --fx-muted: #b5b9cd; }

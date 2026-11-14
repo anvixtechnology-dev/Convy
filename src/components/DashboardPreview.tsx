@@ -173,7 +173,7 @@ export function DashboardPreview({ className }: { className?: string }) {
             </div>
           </header>
 
-          <div className="bg-dots flex min-h-0 flex-1 flex-col gap-2.5 overflow-hidden bg-page/60 px-4 py-4">
+          <div className="legacy-dots flex min-h-0 flex-1 flex-col gap-2.5 overflow-hidden bg-page/60 px-4 py-4">
             <span className="self-center rounded-full border border-line bg-card px-2 py-0.5 text-[10px] text-subtle">Today</span>
             <Appear show={step >= 1} className="flex"><Bubble side="in" time="10:12">Can I book a site visit this Saturday?</Bubble></Appear>
             <Appear show={step >= 2} className="flex justify-end"><Bubble side="out" time="10:14">Absolutely, Priya. Would 11 am work for you?</Bubble></Appear>
