@@ -6,13 +6,13 @@
 import * as THREE from "three";
 
 export const C = {
-  black: 0x0b0708,
-  card: 0x1a1013,
-  wine: 0x5a1426,
-  burgundy: 0xb3264a,
-  bright: 0xc93a5e,
-  rose: 0xe8728e,
-  blush: 0xf2e3e6,
+  black: 0x061019,
+  card: 0x0f1f2d,
+  deep: 0x0b4f6c,
+  ocean: 0x0e6ba8,
+  bright: 0x0fa3b1,
+  light: 0x2dd4bf,
+  pale: 0xe3f4f8,
 };
 
 /** A chat bubble: a rounded rectangle with a tail at one lower corner, extruded with a soft bevel. */
@@ -126,11 +126,11 @@ export function mergeGeometries(list: THREE.BufferGeometry[]) {
 /** Standard materials of the scenes. */
 export function materials() {
   return {
-    wine: new THREE.MeshStandardMaterial({ color: C.wine, roughness: 0.32, metalness: 0.25, emissive: 0x1a0509 }),
-    burgundy: new THREE.MeshStandardMaterial({ color: C.burgundy, roughness: 0.28, metalness: 0.3, emissive: 0x2a0811 }),
-    blush: new THREE.MeshStandardMaterial({ color: C.blush, roughness: 0.4, metalness: 0.05 }),
+    deep: new THREE.MeshStandardMaterial({ color: C.deep, roughness: 0.32, metalness: 0.25, emissive: 0x041420 }),
+    ocean: new THREE.MeshStandardMaterial({ color: C.ocean, roughness: 0.28, metalness: 0.3, emissive: 0x05243a }),
+    pale: new THREE.MeshStandardMaterial({ color: C.pale, roughness: 0.4, metalness: 0.05 }),
     dark: new THREE.MeshStandardMaterial({ color: C.card, roughness: 0.5, metalness: 0.4 }),
-    glow: new THREE.MeshStandardMaterial({ color: C.rose, emissive: C.rose, emissiveIntensity: 0.9, roughness: 0.3 }),
+    glow: new THREE.MeshStandardMaterial({ color: C.light, emissive: C.light, emissiveIntensity: 0.9, roughness: 0.3 }),
   };
 }
 

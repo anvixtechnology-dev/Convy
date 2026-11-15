@@ -1,6 +1,6 @@
 /**
  * "We connect. We convert." as a 3D scene. Customers sit on a sphere around CONVY's core; their
- * messages (blush bubbles) travel in along the lines (we connect), and leave the core as burgundy
+ * messages (pale bubbles) travel in along the lines (we connect), and leave the core as ocean blue
  * replies to a ring of double ticks, each tick lighting as its reply arrives (we convert).
  * Scrolling through the section turns the whole network; the pointer tilts it.
  * Its own chunk; renders only while on screen; not on phones or under reduced motion.
@@ -34,13 +34,13 @@ export default function ConnectScene() {
     const net = new THREE.Group();
     scene.add(net);
 
-    // the core: CONVY, a faceted burgundy heart inside a slowly turning wire shell
-    const coreMat = new THREE.MeshStandardMaterial({ color: C.burgundy, emissive: C.bright, emissiveIntensity: 0.55, roughness: 0.25, metalness: 0.35, flatShading: true });
+    // the core: CONVY, a faceted ocean blue heart inside a slowly turning wire shell
+    const coreMat = new THREE.MeshStandardMaterial({ color: C.ocean, emissive: C.bright, emissiveIntensity: 0.55, roughness: 0.25, metalness: 0.35, flatShading: true });
     const core = new THREE.Mesh(new THREE.IcosahedronGeometry(1.05, 1), coreMat);
     net.add(core);
     const shell = new THREE.LineSegments(
       new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(1.75, 1)),
-      new THREE.LineBasicMaterial({ color: C.rose, transparent: true, opacity: 0.35 }),
+      new THREE.LineBasicMaterial({ color: C.light, transparent: true, opacity: 0.35 }),
     );
     net.add(shell);
 
@@ -55,14 +55,14 @@ export default function ConnectScene() {
       const a = i * Math.PI * (3 - Math.sqrt(5));
       const p = new THREE.Vector3(Math.cos(a) * r, y * 0.8, Math.sin(a) * r).multiplyScalar(4.6);
       customers.push(p);
-      const dot = new THREE.Mesh(custGeo, m.blush);
+      const dot = new THREE.Mesh(custGeo, m.pale);
       dot.position.copy(p);
       net.add(dot);
       linePts.push(p.x, p.y, p.z, 0, 0, 0);
     }
     const lines = new THREE.BufferGeometry();
     lines.setAttribute("position", new THREE.Float32BufferAttribute(linePts, 3));
-    net.add(new THREE.LineSegments(lines, new THREE.LineBasicMaterial({ color: C.rose, transparent: true, opacity: 0.16 })));
+    net.add(new THREE.LineSegments(lines, new THREE.LineBasicMaterial({ color: C.light, transparent: true, opacity: 0.16 })));
 
     // the converted ring: double ticks on a tilted orbit
     const ring = new THREE.Group();
@@ -73,7 +73,7 @@ export default function ConnectScene() {
     const tickGeo = ticksGeometry(0.55);
     for (let i = 0; i < 10; i++) {
       const a = (i / 10) * Math.PI * 2;
-      const mat = new THREE.MeshStandardMaterial({ color: C.rose, emissive: C.rose, emissiveIntensity: 0.15, roughness: 0.3 });
+      const mat = new THREE.MeshStandardMaterial({ color: C.light, emissive: C.light, emissiveIntensity: 0.15, roughness: 0.3 });
       const t = new THREE.Mesh(tickGeo, mat);
       t.position.set(Math.cos(a) * R, Math.sin(a) * R, 0);
       t.rotation.x = -1.15;
@@ -81,7 +81,7 @@ export default function ConnectScene() {
       ring.add(t);
       ticks.push(t);
     }
-    const orbit = new THREE.Mesh(new THREE.TorusGeometry(R, 0.012, 6, 120), new THREE.MeshBasicMaterial({ color: C.rose, transparent: true, opacity: 0.3 }));
+    const orbit = new THREE.Mesh(new THREE.TorusGeometry(R, 0.012, 6, 120), new THREE.MeshBasicMaterial({ color: C.light, transparent: true, opacity: 0.3 }));
     ring.add(orbit);
 
     // the messages: a pool of small bubbles, in from a customer, then out to a tick
@@ -90,7 +90,7 @@ export default function ConnectScene() {
     type Msg = { mesh: THREE.Mesh; from: number; to: number; t: number; speed: number; phase: "in" | "out" };
     const msgs: Msg[] = [];
     for (let i = 0; i < 18; i++) {
-      const mesh = new THREE.Mesh(inGeo, m.blush);
+      const mesh = new THREE.Mesh(inGeo, m.pale);
       mesh.visible = false;
       net.add(mesh);
       msgs.push({ mesh, from: i % N, to: i % 10, t: -i * 0.22, speed: 0.45 + Math.random() * 0.2, phase: "in" });
@@ -158,13 +158,13 @@ export default function ConnectScene() {
             // reached the core: it leaves as a reply
             msg.phase = "out";
             msg.mesh.geometry = outGeo;
-            msg.mesh.material = m.burgundy;
+            msg.mesh.material = m.ocean;
           } else {
             // the reply reached its tick: the tick lights, a new message starts
             ticks[msg.to].userData.glow = 1;
             msg.phase = "in";
             msg.mesh.geometry = inGeo;
-            msg.mesh.material = m.blush;
+            msg.mesh.material = m.pale;
             msg.from = Math.floor(Math.random() * N);
             msg.to = Math.floor(Math.random() * 10);
             msg.t = -Math.random() * 0.6;
@@ -211,6 +211,7 @@ export default function ConnectScene() {
       outGeo.dispose();
       disposeAll(scene);
       renderer.dispose();
+      renderer.forceContextLoss(); // give the context back to the browser
       renderer.domElement.remove();
     };
   }, []);

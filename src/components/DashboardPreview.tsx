@@ -117,7 +117,7 @@ export function DashboardPreview({ className }: { className?: string }) {
 
       <div className="grid h-[460px] grid-cols-1 grid-rows-[minmax(0,1fr)] text-[12px] sm:grid-cols-[250px_1fr]">
         {/* Conversation sidebar */}
-        <aside className="hidden min-w-0 flex-col border-r border-line bg-[#120A0C] sm:flex">
+        <aside className="hidden min-w-0 flex-col border-r border-line bg-[#08131D] sm:flex">
           <div className="space-y-3 p-3">
             <div className="flex items-center gap-2 rounded-md border border-line bg-card px-2.5 py-1.5 text-subtle">
               <Search className="size-3.5" />
@@ -218,11 +218,11 @@ function Bubble({ side, time, children }: { side: "in" | "out"; time: string; ch
     <div
       className={cx(
         "max-w-[80%] rounded-xl px-3 py-2 leading-snug",
-        side === "in" ? "self-start rounded-tl-sm border border-line bg-card text-fg" : "self-end rounded-tr-sm bg-[#4A1424] text-[#FBEFF2]",
+        side === "in" ? "self-start rounded-tl-sm border border-line bg-card text-fg" : "self-end rounded-tr-sm bg-[#0B4F5C] text-[#EAFBF8]",
       )}
     >
       {children}
-      <span className={cx("ml-2 inline-block translate-y-0.5 text-[10px]", side === "in" ? "text-subtle" : "text-[#F0A3B5]")}>{time}</span>
+      <span className={cx("ml-2 inline-block translate-y-0.5 text-[10px]", side === "in" ? "text-subtle" : "text-[#99EBDF]")}>{time}</span>
     </div>
   );
 }

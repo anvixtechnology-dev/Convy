@@ -1,17 +1,17 @@
 /*
   CONVY footer. Unlayered, so it sits over the kit's layer; every rule is scoped to .cv-foot.
-  Burgundy and black: page #0B0708, surface #140C0E, burgundy #B3264A, rose #E8728E,
-  headings #F7F1F2, muted #C9B8BD, borders #33242A.
+  Ocean blue, blue teal and teal: page #061019, surface #0B1824, ocean blue #0E6BA8, teal #2DD4BF,
+  headings #EEF6FA, muted #B4C6D2, borders #1F3547.
 */
 .cv-foot {
-  --f-bg: #0B0708;
-  --f-surface: #140C0E;
-  --f-accent: #E8728E;   /* rose: the tagline, the underline, the arrows on black */
-  --f-rose: #C93A5E;     /* burgundy light */
-  --f-ink: #F7F1F2;
-  --f-muted: #C9B8BD;
-  --f-quiet: #978489; /* 5.6:1 on the black */
-  --f-line: #33242A;
+  --f-bg: #061019;
+  --f-surface: #0B1824;
+  --f-accent: #2DD4BF;   /* teal: the tagline, the underline, the arrows on the navy */
+  --f-light: #0FA3B1;     /* ocean blue light */
+  --f-ink: #EEF6FA;
+  --f-muted: #B4C6D2;
+  --f-quiet: #7F95A5; /* 5.6:1 on the navy */
+  --f-line: #1F3547;
   --f-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   position: relative;
@@ -32,8 +32,8 @@
   aspect-ratio: 16 / 10;
   pointer-events: none;
   background:
-    radial-gradient(closest-side at 38% 58%, rgb(201 58 94 / 0.16), transparent 72%),
-    radial-gradient(closest-side at 62% 70%, rgb(232 114 142 / 0.06), transparent 70%);
+    radial-gradient(closest-side at 38% 58%, rgb(15 163 177 / 0.16), transparent 72%),
+    radial-gradient(closest-side at 62% 70%, rgb(45 212 191 / 0.06), transparent 70%);
   filter: blur(8px);
   animation: cv-foot-drift 22s ease-in-out infinite alternate;
 }
@@ -49,7 +49,7 @@
   max-width: 900px;
   max-height: 900px;
   pointer-events: none;
-  background: radial-gradient(closest-side, rgb(20 12 14 / 0.9), transparent 70%);
+  background: radial-gradient(closest-side, rgb(11 24 36 / 0.9), transparent 70%);
 }
 @keyframes cv-foot-drift {
   0%   { transform: translate3d(0, 0, 0) scale(1);       opacity: 0.85; }
@@ -82,7 +82,7 @@
 .cv-foot__rule {
   height: 1px;
   margin: 56px 0;
-  background: linear-gradient(90deg, rgb(201 58 94 / 0.45), var(--f-line) 28%, var(--f-line) 72%, rgb(51 36 42 / 0.4));
+  background: linear-gradient(90deg, rgb(15 163 177 / 0.45), var(--f-line) 28%, var(--f-line) 72%, rgb(31 53 71 / 0.4));
   transform-origin: left center;
 }
 
@@ -108,7 +108,7 @@
 .cv-foot__logo .mark { width: 22px; height: 22px; }
 .cv-foot__logo:hover,
 .cv-foot__logo:focus-visible {
-  filter: drop-shadow(0 0 14px rgb(201 58 94 / 0.45));
+  filter: drop-shadow(0 0 14px rgb(15 163 177 / 0.45));
 }
 
 .cv-foot__tagline {

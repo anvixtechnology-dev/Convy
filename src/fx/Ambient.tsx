@@ -7,18 +7,31 @@ import { useReducedMotion } from "framer-motion";
 
 const GeoField = lazy(() => import("./GeoField"));
 
+/**
+ * WebGL2 support, probed once per page load. The probe's context is released at once: a browser
+ * keeps only a few live WebGL contexts, and a probe on every visit used to use them up, so the
+ * hero's 3D stopped appearing after a few page changes.
+ */
+let glSupport: boolean | null = null;
+function hasWebGL() {
+  if (glSupport !== null) return glSupport;
+  try {
+    const gl = document.createElement("canvas").getContext("webgl2");
+    glSupport = !!gl;
+    gl?.getExtension("WEBGL_lose_context")?.loseContext();
+  } catch {
+    glSupport = false;
+  }
+  return glSupport;
+}
+
 /** The 3D field only on a wide screen with a fine pointer and WebGL, never under reduced motion. */
 export function GeoFieldLazy() {
   const reduced = useReducedMotion();
   const [ok, setOk] = useState(false);
   useEffect(() => {
     const wide = window.matchMedia("(min-width: 1024px) and (pointer: fine)").matches;
-    let gl = false;
-    try {
-      gl = !!document.createElement("canvas").getContext("webgl2");
-    } catch {
-      gl = false;
-    }
+    const gl = hasWebGL();
     // let the hero's words and window paint first
     const t = window.setTimeout(() => setOk(wide && gl), 350);
     return () => window.clearTimeout(t);
@@ -88,7 +101,7 @@ export function Particles({ className }: { className?: string }) {
         if (p.x > 1.02) p.x = -0.02;
         ctx.beginPath();
         ctx.arc(p.x * w, p.y * h, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(232, 114, 142, ${p.a})`;
+        ctx.fillStyle = `rgba(45, 212, 191, ${p.a})`;
         ctx.fill();
       }
       raf = requestAnimationFrame(draw);
@@ -107,19 +120,14 @@ const ConnectScene = lazy(() => import("./ConnectScene"));
 
 /**
  * The "We connect. We convert." network: live 3D from 640px up with motion allowed and WebGL,
- * else a still burgundy core drawn in CSS, so the section never stands empty.
+ * else a still ocean blue core drawn in CSS, so the section never stands empty.
  */
 export function ConnectSceneLazy() {
   const reduced = useReducedMotion();
   const [ok, setOk] = useState(false);
   useEffect(() => {
     const wide = window.matchMedia("(min-width: 640px)").matches;
-    let gl = false;
-    try {
-      gl = !!document.createElement("canvas").getContext("webgl2");
-    } catch {
-      gl = false;
-    }
+    const gl = hasWebGL();
     setOk(wide && gl);
   }, []);
   return (

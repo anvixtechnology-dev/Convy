@@ -3,7 +3,7 @@
  *
  * type: software (site-kind software)
  * deal: hero centred, nav nav-mega, close close-word, footer footer-dark, rhythm dark-band,
- *       buttons arrow, mark dots, palette the brand's own (brief Part 2: #0B0708 ground, teal #B3264A),
+ *       buttons arrow, mark dots, palette the brand's own (brief Part 2: #061019 ground, teal #0E6BA8),
  *       type instrument (Instrument Sans), moment letters-assemble (the statement section)
  * The page is a stack of screens: the hero alone on the first, every other section one or two.
  *
@@ -129,7 +129,7 @@ export function HeroSection() {
               <div className="cv-win__body">
                 <div className="cv-inbox">
                   <div className="q">Search conversations</div>
-                  <div className="t is-on"><i style={{ background: "#F4B3C2" }}>PN</i><b>Priya Nair</b><time>10:42</time><span>Is the 3BHK in Baner still available?</span></div>
+                  <div className="t is-on"><i style={{ background: "#A7F3E8" }}>PN</i><b>Priya Nair</b><time>10:42</time><span>Is the 3BHK in Baner still available?</span></div>
                   <div className="t"><i style={{ background: "#f3c98b" }}>RK</i><b>Rahul Kulkarni</b><time>10:31</time><span>Can you send the brochure again?</span></div>
                   <div className="t"><i style={{ background: "#a9c4f0" }}>FS</i><b>Fatima Shaikh</b><time>10:12</time><span>Resolved · order 2219 delivered</span></div>
                 </div>
