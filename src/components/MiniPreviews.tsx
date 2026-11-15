@@ -276,20 +276,20 @@ export function InboxMini() {
   return (
     <PreviewFrame label="Illustrative shared inbox with status, owners, response timers and message status (demo data).">
       <div className="text-[12px]">
-        <div className="grid grid-cols-[1.4fr_0.8fr_1fr_0.6fr] gap-3 border-b border-line bg-surface px-4 py-2 text-[10px] font-medium uppercase tracking-wider text-subtle">
+        <div className="grid grid-cols-[1fr_auto_auto] items-center gap-2 border-b border-line bg-surface px-3 py-2 text-[10px] font-medium uppercase tracking-wider text-subtle sm:grid-cols-[1.4fr_0.8fr_1fr_0.6fr] sm:gap-3 sm:px-4">
           <span>Customer</span>
-          <span>Status</span>
-          <span>Timer</span>
+          <span className="text-center sm:text-left">Status</span>
+          <span className="hidden sm:inline">Timer</span>
           <span className="text-right">Owner</span>
         </div>
         {rows.map((r) => (
-          <div key={r.n} className="grid grid-cols-[1.4fr_0.8fr_1fr_0.6fr] items-center gap-3 border-b border-line-soft px-4 py-2.5 last:border-0">
-            <span className="min-w-0">
+          <div key={r.n} className="grid grid-cols-[1fr_auto_auto] items-center gap-2 border-b border-line-soft px-3 py-2.5 last:border-0 sm:grid-cols-[1.4fr_0.8fr_1fr_0.6fr] sm:gap-3 sm:px-4">
+            <span className="min-w-0 pr-1">
               <span className="block truncate font-medium text-fg">{r.n}</span>
-              <span className="block text-[10px] text-subtle">{r.d}</span>
+              <span className="block truncate text-[10px] text-subtle">{r.d} <span className="sm:hidden">· {r.t}</span></span>
             </span>
-            <span><Chip tone={tone[r.s as keyof typeof tone]}>{r.s}</Chip></span>
-            <span className="inline-flex items-center gap-1 truncate text-subtle"><Clock3 className="size-3 shrink-0" />{r.t}</span>
+            <span className="shrink-0"><Chip tone={tone[r.s as keyof typeof tone]}>{r.s}</Chip></span>
+            <span className="hidden items-center gap-1 truncate text-subtle sm:inline-flex"><Clock3 className="size-3 shrink-0" />{r.t}</span>
             <span className="flex justify-end">{r.o ? <Avatar initials={r.o} tone={r.o === "AK" ? 0 : 1} size="sm" /> : <span className="text-subtle">—</span>}</span>
           </div>
         ))}

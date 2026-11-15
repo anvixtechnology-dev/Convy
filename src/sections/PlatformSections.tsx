@@ -45,7 +45,7 @@ const moduleKey: Record<ModuleId, keyof typeof moduleIcons> = {
   wallet: "wallet",
   workflows: "workflows",
 };
-const H2 = "text-[2rem] font-medium leading-[1.12] tracking-[-0.025em] text-fg sm:text-[2.375rem] lg:text-section";
+const H2 = "text-[1.75rem] font-medium leading-[1.12] tracking-[-0.025em] text-fg sm:text-[2.375rem] lg:text-section";
 
 /* 01 Hero */
 export function PlatformHero() {
@@ -55,7 +55,7 @@ export function PlatformHero() {
       <div className="container-page relative pb-20 pt-16 sm:pt-20 lg:pb-28 lg:pt-24">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="mx-auto max-w-[880px] text-center">
           <Eyebrow className="justify-center">{hero.eyebrow}</Eyebrow>
-          <h1 id="platform-hero-title" className="text-[2.6rem] font-medium leading-[1.05] tracking-[-0.035em] text-fg sm:text-[3.4rem] lg:text-hero">
+          <h1 id="platform-hero-title" className="text-[2.1rem] font-medium leading-[1.05] tracking-[-0.035em] text-fg sm:text-[3.2rem] lg:text-hero">
             {hero.titleLead} <span className="text-accent">{hero.titleAccent}</span>
           </h1>
           <p className="mx-auto mt-7 max-w-[680px] text-lg leading-relaxed text-fg/90">{hero.lead}</p>
@@ -99,9 +99,9 @@ export function PlatformIntro() {
             <p className="mt-8 text-[1.3rem] font-medium leading-snug text-fg">{intro.closing}</p>
           </Reveal>
         </div>
-        <ul className="mt-20 grid border-t border-line sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-12 sm:mt-20 grid border-t border-line sm:grid-cols-2 lg:grid-cols-4">
           {intro.benefits.map((b, i) => (
-            <Reveal as="li" key={b.title} delay={i * 0.06} className={cx("border-b border-line py-8 sm:pr-8 lg:border-b-0", i > 0 && "lg:border-l lg:pl-8", i % 2 === 1 && "sm:border-l sm:pl-8")}>
+            <Reveal as="li" key={b.title} delay={i * 0.06} className={cx("border-b border-line py-6 sm:py-8 sm:pr-8 lg:border-b-0", i > 0 && "lg:border-l lg:pl-8", i % 2 === 1 && "sm:border-l sm:pl-8")}>
               <h3 className="text-[17px] font-medium text-fg">{b.title}</h3>
               <p className="mt-2 text-[15px] leading-relaxed text-muted">{b.body}</p>
             </Reveal>
@@ -133,7 +133,7 @@ export function PlatformWorkspace() {
       <div className="container-page">
         <SectionHeading id="platform-ws-title" eyebrow={workspace.eyebrow} title={workspace.title} description={workspace.description} className="mb-16" />
         {/* Open icon-and-text list: top hairlines only, no boxes */}
-        <div className="grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-x-10 gap-y-8 sm:gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
           {ids.map((id, i) => {
             const m = workspace.modules[id];
             const I = moduleIcons[moduleKey[id]];
@@ -258,7 +258,7 @@ export function PlatformIndustries() {
     <section aria-labelledby="platform-ind-title" className="legacy-band py-24 lg:py-32">
       <div className="container-page">
         <SectionHeading id="platform-ind-title" eyebrow={industries.eyebrow} title={industries.title} description={industries.description} className="mb-16" />
-        <div className="grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-x-10 gap-y-8 sm:gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
           {industries.items.map((it, i) => (
             <IndustryCard
               key={it.id}

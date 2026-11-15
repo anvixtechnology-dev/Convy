@@ -43,8 +43,17 @@ html {
 .cv-acts { display: flex; gap: 8px; justify-self: end; }
 .cv-acts span { height: 30px; padding: 0 12px; border-radius: 99px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 500; background: rgb(255 255 255 / .08); color: #E6F0F5; }
 .cv-acts span:first-child { background: #0E6BA8; color: #061019; }
-@media (max-width: 1023px) { .cv-win__body { grid-template-columns: 1fr; } .cv-inbox { display: none; } }
-@media (max-width: 639px) { .cv-win__bar .sp ~ span { display: none; } .cv-msg { max-width: 92%; } }
+@media (max-width: 1023px) { .cv-win__body { grid-template-columns: 1fr; min-height: auto; } .cv-inbox { display: none; } }
+@media (max-width: 639px) {
+  .cv-win__bar .sp ~ span { display: none; }
+  .cv-win__bar { padding: 0 10px; font-size: 12px; }
+  .cv-chat { padding: 10px 12px; gap: 6px; font-size: 13px; }
+  .cv-msg { max-width: 95%; padding: 8px 10px; font-size: 12.5px; border-radius: 12px; }
+  .cv-msg small { font-size: 11px; margin-left: 6px; }
+  .cv-tool { font-size: 11.5px; }
+  .cv-acts { flex-wrap: wrap; gap: 4px; }
+  .cv-acts span { height: 26px; padding: 0 10px; font-size: 11.5px; }
+}
 
 /* ------------------------------------------------ card groups: one --p-h each */
 #benefits .panel { --p-h: 300px; }
@@ -58,8 +67,9 @@ html {
   #security .panel { --p-h: 200px; }
   .faq > .cv-phone-only { display: grid; }
   .hero .pill .muted { display: none; }
+  #benefits .ui-win { width: 100%; max-width: 100%; }
 }
-#benefits .ui-win { width: 620px; }
+#benefits .ui-win { width: 620px; max-width: 100%; }
 .cv-card-diagram, .cv-card-diagram > .dg { height: 100%; }
 
 /* splits: the frame holds a diagram or a fragment */
@@ -136,7 +146,10 @@ html {
 @media (max-width: 639px) {
   #benefits, #security, #faq { --hm: 2; }
   /* the splits as two phone screens (.g2m): the words, then the picture filling the second */
-  .cv-g2m-frame, .cv-setup-frame { --ratio: 0px; height: auto; }
+  .cv-g2m-frame, .cv-setup-frame { --ratio: 0px; height: auto; min-height: 280px; }
+  .cv-chat-frame { --ratio: 0px; height: auto; min-height: 320px; }
+  .cv-tour-frame { --ratio: 0px; height: auto; min-height: 340px; }
+  .cv-tabpanel { min-height: auto; }
   #pricing { --hm: 2; }
   /* four plans in two phone screens: price and button on one row, the lines two-up */
   #pricing .card--plan > p.muted { display: none; }
@@ -149,6 +162,9 @@ html {
   #pricing .card--plan .checks { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2) var(--s-3); }
   #pricing .card--plan .checks li { grid-template-columns: 16px 1fr; gap: var(--s-2); font-size: 13px; }
   #pricing .card--plan .checks li::before { width: 16px; height: 16px; -webkit-mask-size: 16px; mask-size: 16px; }
+  .cv-ai__facts { grid-template-columns: 1fr; }
+  .cv-ai__acts { flex-wrap: wrap; }
+  .cv-ai__acts span { height: 28px; font-size: 12px; }
 }
 /* the statement fills its screen on the tablet and the phone: the line set larger there */
 @media (min-width: 640px) and (max-width: 1023px) { #statement .mo-la__type { font-size: 17vw; } }

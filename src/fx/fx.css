@@ -396,6 +396,11 @@ html:not([data-motion="off"]) .fx-magnet > .fx-btn-3d:active {
 
 @media (max-width: 639px) {
   .fx-over { display: none; }
+  .fx-surf { width: 100%; padding: 12px; }
+  .fx-flows__nodes li { padding: 6px 10px 6px 6px; font-size: 12px; }
+  .fx-catalog__grid { grid-template-columns: repeat(2, 1fr); transform: none; }
+  .fx-wallet__bal strong { font-size: 26px; }
+  .fx-wallet__legend { flex-wrap: wrap; gap: 8px 12px; }
 }
 
 /* ================================================================ scroll reveals */

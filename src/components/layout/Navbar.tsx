@@ -81,6 +81,20 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", on);
   }, []);
 
+  // When route changes, guarantee that mobile navigation sheet closes cleanly
+  useEffect(() => {
+    const el = header.current;
+    if (!el) return;
+    el.classList.remove("is-open");
+    document.body.classList.remove("nav-locked");
+    const toggle = el.querySelector<HTMLButtonElement>(".nav__toggle");
+    if (toggle) {
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.innerHTML =
+        '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
+    }
+  }, [pathname]);
+
   return (
     <header className="nav fx-nav" ref={header}>
       <div className="wrap nav__bar">

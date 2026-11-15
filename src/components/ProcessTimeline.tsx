@@ -36,7 +36,7 @@ export function ProcessTimeline({ steps, variant = "columns" }: { steps: Timelin
             key={s.number}
             delay={0.15 + i * 0.12}
             className={cx(
-              "border-b border-line py-8 sm:pr-8 lg:border-b-0 lg:py-10",
+              "border-b border-line py-6 sm:py-8 sm:pr-8 lg:border-b-0 lg:py-10",
               i > 0 && "lg:border-l lg:pl-8",
               i % 2 === 1 && "sm:border-l sm:pl-8 lg:pl-8",
             )}
@@ -45,7 +45,7 @@ export function ProcessTimeline({ steps, variant = "columns" }: { steps: Timelin
               {s.icon && <s.icon className="size-[18px] text-muted" strokeWidth={1.5} aria-hidden />}
               <span className="text-[13px] font-medium tabular-nums text-subtle">{s.number}</span>
             </div>
-            <h3 className="mt-8 text-[1.375rem] font-medium tracking-[-0.015em] text-fg">{s.name}</h3>
+            <h3 className="mt-5 sm:mt-8 text-[1.25rem] sm:text-[1.375rem] font-medium tracking-[-0.015em] text-fg">{s.name}</h3>
             {s.tagline && <p className="mt-2 font-medium text-fg/90">{s.tagline}</p>}
             <p className="mt-3 text-[15px] leading-relaxed text-muted">{s.body}</p>
           </Reveal>

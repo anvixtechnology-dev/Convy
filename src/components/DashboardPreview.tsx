@@ -115,7 +115,7 @@ export function DashboardPreview({ className }: { className?: string }) {
         <span className="ml-auto"><Avatar initials="AK" tone={0} size="sm" /></span>
       </div>
 
-      <div className="grid h-[460px] grid-cols-1 grid-rows-[minmax(0,1fr)] text-[12px] sm:grid-cols-[250px_1fr]">
+      <div className="grid h-[430px] sm:h-[460px] grid-cols-1 grid-rows-[minmax(0,1fr)] text-[12px] sm:grid-cols-[250px_1fr]">
         {/* Conversation sidebar */}
         <aside className="hidden min-w-0 flex-col border-r border-line bg-[#08131D] sm:flex">
           <div className="space-y-3 p-3">
@@ -196,13 +196,13 @@ export function DashboardPreview({ className }: { className?: string }) {
               <span className="text-subtle">Private note</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="flex-1 rounded-md border border-line bg-card px-2.5 py-1.5 text-subtle">Write a reply…</div>
-              <Paperclip className="size-3.5 text-subtle" />
-              <AtSign className="size-3.5 text-subtle" />
-              <span className="hidden items-center gap-1 rounded-md border border-line px-2 py-1 text-[11px] text-muted sm:inline-flex">
+              <div className="min-w-0 flex-1 truncate rounded-md border border-line bg-card px-2.5 py-1.5 text-subtle">Write a reply…</div>
+              <Paperclip className="size-3.5 shrink-0 text-subtle" />
+              <AtSign className="size-3.5 shrink-0 text-subtle" />
+              <span className="hidden shrink-0 items-center gap-1 rounded-md border border-line px-2 py-1 text-[11px] text-muted sm:inline-flex">
                 <FileText className="size-3" /> Template
               </span>
-              <span className="grid size-7 place-items-center rounded-md bg-accent text-on-accent">
+              <span className="grid size-7 shrink-0 place-items-center rounded-md bg-accent text-on-accent">
                 <SendHorizontal className="size-3.5" />
               </span>
             </div>
@@ -217,7 +217,7 @@ function Bubble({ side, time, children }: { side: "in" | "out"; time: string; ch
   return (
     <div
       className={cx(
-        "max-w-[80%] rounded-xl px-3 py-2 leading-snug",
+        "max-w-[86%] sm:max-w-[80%] rounded-xl px-3 py-2 leading-snug",
         side === "in" ? "self-start rounded-tl-sm border border-line bg-card text-fg" : "self-end rounded-tr-sm bg-[#0B4F5C] text-[#EAFBF8]",
       )}
     >
